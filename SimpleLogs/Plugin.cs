@@ -21,6 +21,12 @@ namespace SimpleLogs
         private ConfigWindow ConfigWindow { get; init; }
         private MainWindow MainWindow { get; init; }
 
+        private ChatCombatLogger ChatLogger { get; init; }
+
+        private NetworkLogger NetworkLogger { get; init; }
+
+        public Timer timer;
+
         public Plugin(
             [RequiredVersion("1.0")] DalamudPluginInterface pluginInterface,
             [RequiredVersion("1.0")] ICommandManager commandManager)
@@ -41,6 +47,9 @@ namespace SimpleLogs
             WindowSystem.AddWindow(ConfigWindow);
             WindowSystem.AddWindow(MainWindow);
 
+            ChatLogger = new ChatCombatLogger(this.PluginInterface);
+            NetworkLogger = new NetworkLogger(this.PluginInterface);
+
             this.CommandManager.AddHandler(CommandName, new CommandInfo(OnCommand)
             {
                 HelpMessage = "A useful message to display in /xlhelp"
@@ -48,6 +57,7 @@ namespace SimpleLogs
 
             this.PluginInterface.UiBuilder.Draw += DrawUI;
             this.PluginInterface.UiBuilder.OpenConfigUi += DrawConfigUI;
+            this.timer = new Timer();
         }
 
         public void Dispose()
@@ -56,6 +66,8 @@ namespace SimpleLogs
             
             ConfigWindow.Dispose();
             MainWindow.Dispose();
+
+            
             
             this.CommandManager.RemoveHandler(CommandName);
         }

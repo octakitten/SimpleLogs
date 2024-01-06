@@ -11,6 +11,13 @@ namespace SimpleLogs
 
         public bool SomePropertyToBeSavedAndWithADefault { get; set; } = true;
 
+        public bool ChatLoggingEnabled { get; set; } = true;
+
+        public bool PacketLoggingEnabled { get; set; } = true;
+
+        // leave this true for now, we'll disable this functionality later
+        public bool network_testing { get; set; } = true;
+
         // the below exist just to make saving less cumbersome
         [NonSerialized]
         private DalamudPluginInterface? PluginInterface;
