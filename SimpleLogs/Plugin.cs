@@ -23,7 +23,7 @@ namespace SimpleLogs
 
         private ChatCombatLogger ChatLogger { get; init; }
 
-        private NetworkLogger NetworkLogger { get; init; }
+        private Network NetworkLogger { get; init; }
 
         public Timer timer;
 
@@ -48,7 +48,7 @@ namespace SimpleLogs
             WindowSystem.AddWindow(MainWindow);
 
             ChatLogger = new ChatCombatLogger(this.PluginInterface);
-            NetworkLogger = new NetworkLogger(this.PluginInterface);
+            NetworkLogger = new Network(this.PluginInterface);
 
             this.CommandManager.AddHandler(CommandName, new CommandInfo(OnCommand)
             {
