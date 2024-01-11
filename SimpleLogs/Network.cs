@@ -40,75 +40,45 @@ namespace SimpleLogs
                 // Handle the packet
                 HandlePacketTesting(packet);
             }
-
-            // Parse the packet
-            var packet = Marshal.PtrToStructure<Packet>(dataPtr);
-
-            // Handle the packet
-            HandlePacket(packet);
+            return;
         }
 
         private void HandlePacket(Packet packet)
         {
-            // read the packet array 8 bytes at a time and put each into a byte array
-            // that is part of a larger array
-            var packetArray = new byte[packet.Length][];
-            for (var i = 0; i < packet.Length; i++)
+            // create the structs we need to decode the packet
+            PacketHeader header = new PacketHeader();
+            PacketSegmentHeader segmentHeader = new PacketSegmentHeader();
+            PacketIPCHeader ipcHeader = new PacketIPCHeader();
+            PacketPayload payload = new PacketPayload();
+            PacketPayloadDecomp payloadDecomp = new PacketPayloadDecomp();
+            PacketDecode packetDecode = new PacketDecode();
+
+
+            // try block here
+            try
             {
-                packetArray[i] = new byte[8];
-                Array.Copy(packet.Data, i * 8, packetArray[i], 0, 8);
+                // decode the packet
+                header = Marshal.PtrToStructure<PacketHeader>(packet.Data);
+
+                IntPtr segmentHeaderPtr = IntPtr.Add(packet.Data, Marshal.SizeOf(typeof(PacketHeader)));
+                segmentHeader = Marshal.PtrToStructure<PacketSegmentHeader>(segmentHeaderPtr);
+
+                IntPtr ipcHeaderPtr = IntPtr.Add(segmentHeaderPtr, Marshal.SizeOf(typeof(PacketSegmentHeader)));
+                ipcHeader = Marshal.PtrToStructure<PacketIPCHeader>(ipcHeaderPtr);
+
+                IntPtr payloadPtr = IntPtr.Add(ipcHeaderPtr, Marshal.SizeOf(typeof(PacketIPCHeader)));
+                payload = Marshal.PtrToStructure<PacketPayload>(payloadPtr);
             }
-
-            // read the first 64 bits of the packet into a ulong variable
-            var magic = BitConverter.ToUInt64(packet.Data, 0);
-            // read the next 64 bits into a ulong variable
-            var timestamp = BitConverter.ToUInt64(packet.Data, 8);
-            // read the next 32 bits into a uint variable
-            var size01 = BitConverter.ToUInt32(packet.Data, 16);
-            // read the next 16 bits into a ushort variable
-            var connection_type = BitConverter.ToUInt16(packet.Data, 20);
-            // read the next 16 bits into a ushort variable
-            var unknown01 = BitConverter.ToUInt16(packet.Data, 22);
-            // read the next 8 bits into a integer byte variable
-            var isCompressed = packet.Data[24];
-            // read the next 32 bits into a uint variable
-            var unknown02 = BitConverter.ToUInt32(packet.Data, 25);
-            // read the next 32 bits into a uint variable
-            var size02 = BitConverter.ToUInt32(packet.Data, 29);
-            // if its compressed, decompress the rest of the packet
-            if (isCompressed ==1)
+            catch (Exception e)
             {
-                byte[] data = packet.Data[33, packet.Length];
-                byte[] comp_data = ZlibStream.CompressBuffer(data);
-                byte[] decomp_data = ZlibStream.UncompressBuffer(comp_data);
-
+                // if we get an exception, log it and return
+                PluginLog.LogError(e.ToString());
+                return;
             }
-            if (size02 != 0)
+            
+            if (PacketHeader.isCompressed == 1)
             {
-                // read the next 32 bits into a uint variable
-                var source_actor = BitConverter.ToUInt32(decomp_data, 0);
-                // read the next 32 bits into a uint variable
-                var target_actor = BitConverter.ToUInt32(decomp_data, 4);
-                // read the next 16 bits into a ushort variable
-                var type02 = BitConverter.ToUInt16(decomp_data, 8);
-                // read the next 16 bits into a ushort variable
-                var padding = BitConverter.ToUInt16(decomp_data, 10);
-
-                if (type02 = 3)
-                {
-                    // read the next 16 bits into a ushort variable
-                    var reserved = BitConverter.ToUInt16(decomp_data, 12);
-                    // read the next 16 bits into a ushort variable
-                    var type03 = BitConverter.ToUInt16(pdecomp_data, 14);
-                    // read the next 16 bits into a ushort variable
-                    var padding01 = BitConverter.ToUInt16(decomp_data, 16);
-                    // read the next 16 bits into a ushort variable
-                    var serverId = BitConverter.ToUInt16(decomp_data, 18);
-                    // read the next 32 bits into a uint variable
-                    var timestamp = BitConverter.ToUInt32(decomp_data, 20);
-                    // read the next 32 bits into a uint variable
-                    var padding02 = BitConverter.ToUInt32(decomp_data, 24);
-                }
+                PacketPayloadDecomp.Data = DecompressPayload(PacketPayload.Data);
             }
 
 
@@ -117,15 +87,16 @@ namespace SimpleLogs
 
         private void HandlePacketTesting(Packet packet)
         {
-            // read the packet array 8 bits at a time and put each 
+            // read the packet array 1 byte at a time and put each into a byte array
+
+            var packetArray = new byte[packet.Length][];
+            for (var i = 0; i < packet.Length; i++)
+            {
+                packetArray[i] = new byte[8];
+                Array.Copy(packet.Data, i * 8, packetArray[i], 0, 8);
+            }
         }
 
-        [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        private struct Packet
-        {
-            public ushort Length;
-            public byte[] Data;
-        }
 
         // implement the IsCombatEvent method
         private bool IsCombatEvent(ushort opCode, NetworkMessageDirection direction)
@@ -138,6 +109,73 @@ namespace SimpleLogs
             }
 
             return false;
+        }
+
+        // decompress packet payload here
+        private byte[] DecompressPayload(byte[] payload)
+        {
+            byte[] decomp_data = ZlibStream.UncompressBuffer(payload);
+            return decomp_data;
+        }
+
+
+        [StructLayout(LayoutKind.Sequential, Pack = 1)]
+        private struct Packet
+        {
+            public ushort Length;
+            public byte[] Data;
+        }
+
+        // if the instructions laid out in the document i looked at are right, then these headers should work out just fine.
+        // otherwise, we'll need to fix things
+        private struct PacketHeader
+        {
+            public ulong Magic;
+            public ulong Magic2;
+            public ulong Timestamp;
+            public uint Size01;
+            public ushort ConnectionType;
+            public ushort Unknown01;
+            public ushort IsCompressed;
+            public uint Unknown02;
+            public uint Size02;
+        }
+
+        private struct PacketSegmentHeader
+        {
+            public uint SourceActor;
+            public uint TargetActor;
+            public ushort Type02;
+            public ushort Padding;
+        }
+        
+        private struct PacketIPCHeader
+        {
+            public ushort Reserved;
+            public ushort Type03;
+            public ushort Padding01;
+            public ushort ServerId;
+            public uint Timestamp;
+            public uint Padding02;
+        }
+
+        private struct PacketPayload
+        {
+            public byte[] Data;
+        }
+
+        private struct PacketPayloadDecomp
+        {
+            public byte[] Data;
+        }
+
+        private struct PacketDecode
+        {
+            public PacketHeader Header;
+            public PacketSegmentHeader SegmentHeader;
+            public PacketIPCHeader IPCHeader;
+            public PacketPayload Payload;
+            public PacketPayloadDecomp PayloadDecomp
         }
     }
 }
