@@ -18,6 +18,9 @@ namespace SimpleLogs
         // leave this true for now, we'll disable this functionality later
         public bool network_testing { get; set; } = true;
 
+        public List<string> chatLog = new List<string>();
+        public List<string> packetLog = new List<string>();
+
         // the below exist just to make saving less cumbersome
         [NonSerialized]
         private DalamudPluginInterface? PluginInterface;

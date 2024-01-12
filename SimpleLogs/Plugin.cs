@@ -5,6 +5,7 @@ using System.IO;
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin.Services;
 using SimpleLogs.Windows;
+using SimpleLogs.Utilities;
 
 namespace SimpleLogs
 {
@@ -20,12 +21,12 @@ namespace SimpleLogs
 
         private ConfigWindow ConfigWindow { get; init; }
         private MainWindow MainWindow { get; init; }
+        public Timer timer;
 
         private ChatCombatLogger ChatLogger { get; init; }
 
         private Network NetworkLogger { get; init; }
 
-        public Timer timer;
 
         public Plugin(
             [RequiredVersion("1.0")] DalamudPluginInterface pluginInterface,
@@ -37,18 +38,15 @@ namespace SimpleLogs
             this.Configuration = this.PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
             this.Configuration.Initialize(this.PluginInterface);
 
-            // you might normally want to embed resources and load them from the manifest stream
-            var imagePath = Path.Combine(PluginInterface.AssemblyLocation.Directory?.FullName!, "goat.png");
-            var goatImage = this.PluginInterface.UiBuilder.LoadImage(imagePath);
-
             ConfigWindow = new ConfigWindow(this);
             MainWindow = new MainWindow(this, goatImage);
             
             WindowSystem.AddWindow(ConfigWindow);
             WindowSystem.AddWindow(MainWindow);
 
+            this.timer = new Timer();
             ChatLogger = new ChatCombatLogger(this.PluginInterface);
-            NetworkLogger = new Network(this.PluginInterface);
+            NetworkLogger = new Network(this.PluginInterface, timer);
 
             this.CommandManager.AddHandler(CommandName, new CommandInfo(OnCommand)
             {
@@ -57,7 +55,6 @@ namespace SimpleLogs
 
             this.PluginInterface.UiBuilder.Draw += DrawUI;
             this.PluginInterface.UiBuilder.OpenConfigUi += DrawConfigUI;
-            this.timer = new Timer();
         }
 
         public void Dispose()

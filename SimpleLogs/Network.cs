@@ -4,16 +4,19 @@ using Dalamud.Plugin;
 using System;
 using System.Runtime.InteropServices;
 using Ionic.Zlib;
+using SimpleLogs.Utilities;
 
 namespace SimpleLogs
 {
     public class Network
     {
         private DalamudPluginInterface pluginInterface;
+        private Timer timer;
 
-        public void Initialize(DalamudPluginInterface pluginInterface)
+        public void Initialize(DalamudPluginInterface pluginInterface, Timer tmr)
         {
             this.pluginInterface = pluginInterface;
+            this.timer = tmr;
 
             // Subscribe to the network events
             this.pluginInterface.Framework.Network.OnNetworkMessage += OnNetworkMessage;
@@ -35,7 +38,7 @@ namespace SimpleLogs
             if (pluginInterface.Config.GetBool("network_testing"))
             {
                 // Parse the packet
-                var packet = Marshal.PtrToStructure<Packet>(dataPtr);
+                var packet = Marshal.PtrToStructure<TestPacket>(dataPtr);
 
                 // Handle the packet
                 HandlePacketTesting(packet);
@@ -68,6 +71,17 @@ namespace SimpleLogs
 
                 IntPtr payloadPtr = IntPtr.Add(ipcHeaderPtr, Marshal.SizeOf(typeof(PacketIPCHeader)));
                 payload = Marshal.PtrToStructure<PacketPayload>(payloadPtr);
+
+                packetDecode.Header = header;
+                packetDecode.SegmentHeader = segmentHeader;
+                packetDecode.IPCHeader = ipcHeader;
+                packetDecode.Payload = payload;
+
+                if (PacketHeader.isCompressed == 1)
+                {
+                    PacketPayloadDecomp.Data = DecompressPayload(PacketPayload.Data);
+                    packetDecode.PayloadDecomp = payloadDecomp;
+                }
             }
             catch (Exception e)
             {
@@ -76,25 +90,18 @@ namespace SimpleLogs
                 return;
             }
             
-            if (PacketHeader.isCompressed == 1)
-            {
-                PacketPayloadDecomp.Data = DecompressPayload(PacketPayload.Data);
-            }
 
 
 
         }
 
-        private void HandlePacketTesting(Packet packet)
+        private void HandlePacketTesting(TestPacket packet)
         {
-            // read the packet array 1 byte at a time and put each into a byte array
+            var timestamp = timer.GetTime();
+            
 
-            var packetArray = new byte[packet.Length][];
-            for (var i = 0; i < packet.Length; i++)
-            {
-                packetArray[i] = new byte[8];
-                Array.Copy(packet.Data, i * 8, packetArray[i], 0, 8);
-            }
+
+            return;
         }
 
 
@@ -176,6 +183,16 @@ namespace SimpleLogs
             public PacketIPCHeader IPCHeader;
             public PacketPayload Payload;
             public PacketPayloadDecomp PayloadDecomp
+        }
+
+        private struct TestPacket
+        {
+            public ushort Length;
+            public byte[] Data;
+            public ushort opCode;
+            public uint sourceActorId;
+            public uint targetActorId;
+            public NetworkMessageDirection direction;
         }
     }
 }
