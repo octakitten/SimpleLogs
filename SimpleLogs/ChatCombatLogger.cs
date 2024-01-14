@@ -4,6 +4,7 @@ using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text;
 using Dalamud.Plugin;
 using System.Collections.Generic;
+using System.Text;
 
 namespace SimpleLogs
 {
@@ -55,15 +56,38 @@ namespace SimpleLogs
                     
                     string[] words = chatLog[entry].message.Split(' ');
                     int current = 0;
+                    if (words[0] == "Critical!")
+                    {
+                        current = current + 1;
+                    }
+                    
                     if (words[0] == "Direct" || words[1] == "Hit!")
                     {
                         current = current + 2;
                     }
+                    
+                    if (words[0] == "Critical" || words[1] == "Direct" || words[1] == "Hit!")
+                    {
+                        current = current + 3;
+                    }
 
-                    if (words[current] == "You" || words[current + 1] == "cast")
+                    if (words[current] == "You" && ( words[current + 1] == "use" || words[current + 1] == "cast"))
+                    {
+                        lastCast = true;
+                        lastPlayer = chatLog[entry].sender;
+                    } 
+                    else if (words[current + 3] == "use" || words[current + 3] == "cast")
+                    {
+                        lastCast = true;
+                        lastPlayer = words[current] + " " + words[current + 1] + " " + words[current + 2];
+                    }
+                    else if (lastCast == true)
                     {
                         
-                    
+                    }
+                    else
+                    {
+                        lastCast = false;
                     }
                 }
             }
