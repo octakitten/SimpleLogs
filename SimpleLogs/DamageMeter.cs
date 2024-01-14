@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace SimpleLogs;
@@ -9,6 +10,7 @@ public class DamageMeter
     {
         public string name;
         public int damage;
+        public double dps;
     }
     
     public struct DamageEntry
@@ -68,10 +70,17 @@ public class DamageMeter
             {
                 player.damage = partyMembers[i].damage;
                 player.damage += damage;
+                player.dps = player.damage / getFightDuration();
                 partyMembers[i] = player;
                 return;
             }
         }
+        
+    }
+
+    private double getFightDuration()
+    {
+        return damageLog[0].timestamp - damageLog[Index.End].timestamp;
     }
     
     public List<DamageEntry> GetDamageLog()
@@ -84,10 +93,30 @@ public class DamageMeter
         return partyMembers;
     }
     
-    public void ClearDamageLog()
+    public void Reset()
     {
         damageLog.Clear();
         partyMembers.Clear();
+    }
+
+    public void HandleEvent(string name, int damage, double timestamp)
+    {
+        player.name = name;
+        player.damage = damage;
+        lastEntry.name = name;
+        lastEntry.damage = damage;
+        lastEntry.timestamp = timestamp;
+        if (IsPartyMember(name))
+        {
+            UpdatePartyMemberDamage(name, damage);
+            AddDamageEntry(name, damage, timestamp);
+        }
+        else
+        {
+            AddPartyMember(name);
+            UpdatePartyMemberDamage(name, damage);
+            AddDamageEntry(name, damage, timestamp);
+        }
     }
     
     public void Dispose()

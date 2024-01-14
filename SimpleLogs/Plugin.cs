@@ -27,7 +27,7 @@ namespace SimpleLogs
         public Timer timer;
         public DamageMeter DamageMeter { get; init; }
 
-        private ChatCombatLogger ChatLogger { get; init; }
+        public ChatCombatLogger ChatLogger { get; init; }
 
         private Network NetworkLogger { get; init; }
 
@@ -80,6 +80,7 @@ namespace SimpleLogs
         private void OnCommand(string command, string args)
         {
             // in response to the slash command, just display our main ui
+            ChatLogger.AnalyzeChatLog();
             MainWindow.IsOpen = true;
         }
 

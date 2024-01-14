@@ -34,6 +34,17 @@ public class MainWindow : Window, IDisposable
         {
             this.plugin.DrawConfigUI();
         }
+        
+        if (ImGui.Button("Update"))
+        {
+            plugin.ChatLogger.AnalyzeChatLog();
+        }
+
+        if (ImGui.Button("Reset"))
+        {
+            plugin.DamageMeter.Reset();
+            plugin.ChatLogger.Reset();
+        }
 
         ImGui.Spacing();
 
@@ -43,9 +54,17 @@ public class MainWindow : Window, IDisposable
         ImGui.Columns(3);
         ImGui.Separator();
         
-        foreach (var VARIABLE in plugin.DamageMeter.GetPartyMembers())
+        foreach (var member in plugin.DamageMeter.GetPartyMembers())
         {
-            ImGui.Text(VARIABLE.name);
+            // put the name in the first column
+            ImGui.Text(member.name);
+            ImGui.NextColumn();
+            // put the damage in the second column
+            ImGui.Text(member.damage.ToString());
+            ImGui.NextColumn();
+            // put the DPS in the third column
+            ImGui.Text(member.dps.ToString());
+            ImGui.NextColumn();
         }
         
     }

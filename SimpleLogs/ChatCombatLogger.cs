@@ -37,68 +37,77 @@ namespace SimpleLogs
             ref bool isHandled)
         {
             // Record the chat message to the chat log
-            lastEvent.type = type.ToString();
-            lastEvent.sender = sender.TextValue;
-            lastEvent.message = message.TextValue;
+            lastEvent.type = type.ToString().ToLower();
+            lastEvent.sender = sender.TextValue.ToLower();
+            lastEvent.message = message.TextValue.ToLower();
             lastEvent.timestamp = timer.GetElapsedTime().TotalSeconds;
             chatLog.Add(lastEvent);
         }
 
-        private void AnalyzeChatLog()
+        public void AnalyzeChatLog()
         {
-            int entry = 0;
+            plugin.DamageMeter.Reset();
             bool lastCast = false;
             string lastPlayer = "";
-            while (true)
+            for (int entry = 0; entry < chatLog.Count; entry++)
             {
-                if (chatLog[entry].type == "None")
+                if (chatLog[entry].type == "none")
                 {
                     
                     string[] words = chatLog[entry].message.Split(' ');
                     int current = 0;
-                    if (words[0] == "Critical!")
+                    if (lastCast == true)
                     {
-                        current = current + 1;
+                        HandleDamageEvent(lastPlayer, chatLog[entry]);
                     }
-                    
-                    if (words[0] == "Direct" || words[1] == "Hit!")
-                    {
-                        current = current + 2;
-                    }
-                    
-                    if (words[0] == "Critical" || words[1] == "Direct" || words[1] == "Hit!")
-                    {
-                        current = current + 3;
-                    }
-
-                    if (words[current] == "You" && ( words[current + 1] == "use" || words[current + 1] == "cast"))
+                    else if (words[current] == "you" && ( words[current + 1] == "use" || words[current + 1] == "cast"))
                     {
                         lastCast = true;
-                        lastPlayer = chatLog[entry].sender;
+                        lastPlayer = "you";
                     } 
                     else if (words[current + 3] == "use" || words[current + 3] == "cast")
                     {
                         lastCast = true;
                         lastPlayer = words[current] + " " + words[current + 1] + " " + words[current + 2];
                     }
-                    else if (lastCast == true)
+                    else if (words[current] == "you" && words[current + 1] == "hit")
                     {
-                        
+                        lastCast = false;
+                        HandleDamageEvent("you", chatLog[entry]);
+                    }
+                    else if (words[current + 3] == "hits")
+                    {
+                        lastCast = false;
+                        HandleDamageEvent(words[current] + " " + words[current + 1] + " " + words[current + 2], chatLog[entry]);
                     }
                     else
                     {
                         lastCast = false;
+                    
                     }
                 }
             }
         }
 
-        private void HandleMessage(string[] message)
+        private void HandleDamageEvent(string player, ChatEvent cEvent)
         {
-            
+            string[] words = cEvent.message.Split(' ');
+            foreach (var word in words)
+            {
+                try
+                {
+                    int dmg = int.Parse(word);
+                    plugin.DamageMeter.HandleEvent(player, dmg, cEvent.timestamp);
+                    break;
+                }
+                catch
+                {
+                    //do nothing if it fails
+                }
+            }
         }
 
-        private void ClearChatLog()
+        public void Reset()
         {
             chatLog.Clear();
         }
