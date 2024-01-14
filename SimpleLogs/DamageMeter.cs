@@ -6,41 +6,38 @@ namespace SimpleLogs;
 
 public class DamageMeter
 {
-    public struct PartyMember
+    public class PartyMember
     {
         public string name;
         public int damage;
         public double dps;
     }
     
-    public struct DamageEntry
+    public class DamageEntry
     {
         public string name;
         public int damage;
         public double timestamp;
     }
-
-    // these two are dummy variables, dont use for anything permanent
-    private PartyMember player;
-    private DamageEntry lastEntry;
     
-    private List<DamageEntry> damageLog = new List<DamageEntry>();
-    private List<PartyMember> partyMembers = new List<PartyMember>();
-    private Timer timer;
+    private List<DamageEntry> damageLog;
+    private List<PartyMember> partyMembers;
     private Plugin plugin;
     
-    public DamageMeter(Plugin plugin, Timer tmr)
+    public DamageMeter(Plugin plugin)
     {
-        timer = tmr;
         this.plugin = plugin;
+        this.damageLog = new List<DamageEntry>();
+        this.partyMembers = new List<PartyMember>();
     }
     
     public void AddDamageEntry(string name, int damage, double time)
     {
-        lastEntry.name = name;
-        lastEntry.damage = damage;
-        lastEntry.timestamp = time;
-        damageLog.Add(lastEntry);
+        DamageEntry newEntry = new DamageEntry();
+        newEntry.name = name;
+        newEntry.damage = damage;
+        newEntry.timestamp = time;
+        damageLog.Add(newEntry);
     }
     
     public bool IsPartyMember(string name)
@@ -57,9 +54,11 @@ public class DamageMeter
     
     public void AddPartyMember(string name)
     {
-        player.name = name;
-        player.damage = 0;
-        partyMembers.Add(player);
+        plugin.Configuration.addedToParty += 1;
+        PartyMember newPlayer = new PartyMember();
+        newPlayer.name = name;
+        newPlayer.damage = 0;
+        partyMembers.Add(newPlayer);
     }
     
     public void UpdatePartyMemberDamage(string name, int damage)
@@ -68,19 +67,25 @@ public class DamageMeter
         {
             if (partyMembers[i].name == name)
             {
-                player.damage = partyMembers[i].damage;
-                player.damage += damage;
-                player.dps = player.damage / getFightDuration();
-                partyMembers[i] = player;
-                return;
+                plugin.Configuration.addedDamage = true;
+                plugin.Configuration.addedDamageAmount = damage;
+                partyMembers[i].damage += damage;
+                partyMembers[i].dps = partyMembers[i].damage / GetFightDuration();
+                break;
             }
         }
-        
     }
 
-    private double getFightDuration()
+    private double GetFightDuration()
     {
-        return damageLog[0].timestamp - damageLog[Index.End].timestamp;
+        double duration = 0;
+        int count = damageLog.Count;
+        if (count > 0)
+        {
+            duration = damageLog[count - 1].timestamp - damageLog[0].timestamp;
+            plugin.Configuration.latestFightDuration = duration;
+        }
+        return duration;
     }
     
     public List<DamageEntry> GetDamageLog()
@@ -101,11 +106,6 @@ public class DamageMeter
 
     public void HandleEvent(string name, int damage, double timestamp)
     {
-        player.name = name;
-        player.damage = damage;
-        lastEntry.name = name;
-        lastEntry.damage = damage;
-        lastEntry.timestamp = timestamp;
         if (IsPartyMember(name))
         {
             UpdatePartyMemberDamage(name, damage);

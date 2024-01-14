@@ -11,7 +11,7 @@ public class MainWindow : Window, IDisposable
     private Plugin plugin;
 
     public MainWindow(Plugin plugin) : base(
-        "Simple Meter!", ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse)
+        "Simple Meter!")
     {
         this.SizeConstraints = new WindowSizeConstraints
         {
@@ -49,23 +49,32 @@ public class MainWindow : Window, IDisposable
         ImGui.Spacing();
 
         ImGui.Text("Here's your damage:");
-        ImGui.Spacing();
-        
-        ImGui.Columns(3);
         ImGui.Separator();
         
         foreach (var member in plugin.DamageMeter.GetPartyMembers())
         {
-            // put the name in the first column
             ImGui.Text(member.name);
-            ImGui.NextColumn();
-            // put the damage in the second column
             ImGui.Text(member.damage.ToString());
-            ImGui.NextColumn();
-            // put the DPS in the third column
             ImGui.Text(member.dps.ToString());
-            ImGui.NextColumn();
+            ImGui.Separator();
         }
-        
+
+        //ImGui.Text((plugin.ChatLogger.GetChatLog()[plugin.ChatLogger.GetChatLog().Count]).type);
+        //ImGui.Text((plugin.ChatLogger.GetChatLog()[plugin.ChatLogger.GetChatLog().Count]).sender);
+        //ImGui.Text((plugin.ChatLogger.GetChatLog()[plugin.ChatLogger.GetChatLog().Count]).message);
+        //ImGui.Text((plugin.ChatLogger.GetChatLog()[plugin.ChatLogger.GetChatLog().Count]).timestamp.ToString());
+        //ImGui.Separator();
+        foreach (var entry in plugin.ChatLogger.GetChatLog())
+        {
+            ImGui.Text(entry.type);
+            ImGui.Text(entry.sender);
+            ImGui.Text(entry.message);
+            ImGui.Text(entry.timestamp.ToString());
+        }
+        ImGui.Text($"Did we add a party member? {plugin.Configuration.addedToParty}");
+        ImGui.Text($"Did we handle a damage event? {plugin.Configuration.handledDamageEvent}");
+        ImGui.Text($"Did we add damage to a player? {plugin.Configuration.addedDamage}, {plugin.Configuration.addedDamageAmount}");
+        ImGui.Text($"Latest fight duration? {plugin.Configuration.latestFightDuration}");
+        ImGui.Text("Bottom text");
     }
 }

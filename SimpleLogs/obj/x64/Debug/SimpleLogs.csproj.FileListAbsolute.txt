@@ -3,3 +3,8 @@
 /home/ghost/Documents/Programming/FFXIV/SimpleLogs/SimpleLogs/obj/x64/Debug/SimpleLogs.AssemblyInfoInputs.cache
 /home/ghost/Documents/Programming/FFXIV/SimpleLogs/SimpleLogs/obj/x64/Debug/SimpleLogs.AssemblyInfo.cs
 /home/ghost/Documents/Programming/FFXIV/SimpleLogs/SimpleLogs/obj/x64/Debug/SimpleLogs.csproj.CoreCompileInputs.cache
+/home/ghost/Documents/Programming/FFXIV/SimpleLogs/SimpleLogs/bin/x64/Debug/SimpleLogs.deps.json
+/home/ghost/Documents/Programming/FFXIV/SimpleLogs/SimpleLogs/bin/x64/Debug/SimpleLogs.dll
+/home/ghost/Documents/Programming/FFXIV/SimpleLogs/SimpleLogs/bin/x64/Debug/SimpleLogs.pdb
+/home/ghost/Documents/Programming/FFXIV/SimpleLogs/SimpleLogs/obj/x64/Debug/SimpleLogs.dll
+/home/ghost/Documents/Programming/FFXIV/SimpleLogs/SimpleLogs/obj/x64/Debug/SimpleLogs.pdb

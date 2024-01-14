@@ -11,6 +11,18 @@ namespace SimpleLogs
         public int Version { get; set; } = 0;
 
         public bool SomePropertyToBeSavedAndWithADefault { get; set; } = true;
+        // some debugging variables here
+        public int addedToParty { get; set; } = 0;
+        
+        public bool handledDamageEvent { get; set; } = false;
+        
+        public bool addedDamage { get; set; } = false;
+        
+        public int addedDamageAmount { get; set; } = -1;
+        
+        public double latestFightDuration { get; set; } = -1;
+        
+        //end debugging variables
 
         public bool ChatLoggingEnabled { get; set; } = true;
 

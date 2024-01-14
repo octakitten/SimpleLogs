@@ -55,7 +55,7 @@ namespace SimpleLogs
             this.timer = new Timer();
             ChatLogger = new ChatCombatLogger(this, timer);
             NetworkLogger = new Network(this, timer);
-            DamageMeter = new DamageMeter(this, timer);
+            DamageMeter = new DamageMeter(this);
 
             this.CommandManager.AddHandler(CommandName, new CommandInfo(OnCommand)
             {

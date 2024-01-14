@@ -51,7 +51,7 @@ namespace SimpleLogs
             string lastPlayer = "";
             for (int entry = 0; entry < chatLog.Count; entry++)
             {
-                if (chatLog[entry].type == "none")
+                if (true)
                 {
                     
                     string[] words = chatLog[entry].message.Split(' ');
@@ -91,6 +91,7 @@ namespace SimpleLogs
 
         private void HandleDamageEvent(string player, ChatEvent cEvent)
         {
+            plugin.Configuration.handledDamageEvent = true;
             string[] words = cEvent.message.Split(' ');
             foreach (var word in words)
             {
