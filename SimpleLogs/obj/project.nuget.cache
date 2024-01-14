@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "gnjqs3g7PPbxamWwadEnktIjSfQxtRTitQj5mD5RKl8vUHYryhLzTidzzdD/pqyYfIzC/NmKyuYeQAHRKtdVSg==",
+  "dgSpecHash": "cqYEprfO5T6cq69TrRbIQj78m5pYeWWIOk8kTRDyS3c6iqhxJ1jCxYUl9U94cYmp/ugJHOhIoNiDJgaM2U2IDA==",
   "success": true,
-  "projectFilePath": "/home/ghosty/Documents/Programming/FFXIV_Plugins/SimpleLogs/SimpleLogs/SimpleLogs.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "/home/ghost/Documents/Programming/FFXIV/SimpleLogs/SimpleLogs/SimpleLogs.csproj",
+  "expectedPackageFiles": [
+    "/home/ghost/.nuget/packages/dalamudpackager/2.1.12/dalamudpackager.2.1.12.nupkg.sha512"
+  ],
   "logs": []
 }

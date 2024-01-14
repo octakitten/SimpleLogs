@@ -1,0 +1,5 @@
+/home/ghost/Documents/Programming/FFXIV/SimpleLogs/SimpleLogs/obj/x64/Debug/SimpleLogs.csproj.AssemblyReference.cache
+/home/ghost/Documents/Programming/FFXIV/SimpleLogs/SimpleLogs/obj/x64/Debug/SimpleLogs.GeneratedMSBuildEditorConfig.editorconfig
+/home/ghost/Documents/Programming/FFXIV/SimpleLogs/SimpleLogs/obj/x64/Debug/SimpleLogs.AssemblyInfoInputs.cache
+/home/ghost/Documents/Programming/FFXIV/SimpleLogs/SimpleLogs/obj/x64/Debug/SimpleLogs.AssemblyInfo.cs
+/home/ghost/Documents/Programming/FFXIV/SimpleLogs/SimpleLogs/obj/x64/Debug/SimpleLogs.csproj.CoreCompileInputs.cache

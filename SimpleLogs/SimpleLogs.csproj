@@ -3,14 +3,18 @@
   <Import Project="Dalamud.Plugin.Bootstrap.targets"/>
 
   <PropertyGroup>
-    <Authors></Authors>
+    <Authors>octakitten</Authors>
     <Company></Company>
     <Version>0.0.0.1</Version>
     <Description>A simple logging plugin.</Description>
-    <Copyright></Copyright>
+    <Copyright>octakitten</Copyright>
     <TargetFramework>net7.0</TargetFramework>
-    <PackageProjectUrl></PackageProjectUrl>
+    <PackageProjectUrl>http://github.com/octakitten/SimpleLogs</PackageProjectUrl>
     <PackageLicenseExpression>AGPL-3.0-or-later</PackageLicenseExpression>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Utilities\" />
+  </ItemGroup>
 </Project>

@@ -3,23 +3,24 @@ using Dalamud.Game.Network;
 using Dalamud.Plugin;
 using System;
 using System.Runtime.InteropServices;
-using Ionic.Zlib;
-using SimpleLogs.Utilities;
+using Dalamud.Logging;
+using System.IO.Compression;
+using SimpleLogs;
 
 namespace SimpleLogs
 {
     public class Network
     {
-        private DalamudPluginInterface pluginInterface;
+        private Plugin plugin;
         private Timer timer;
 
-        public void Initialize(DalamudPluginInterface pluginInterface, Timer tmr)
+        public Network(Plugin plugin, Timer tmr)
         {
-            this.pluginInterface = pluginInterface;
+            timer = new Timer();
+            this.plugin = plugin;
             this.timer = tmr;
 
             // Subscribe to the network events
-            this.pluginInterface.Framework.Network.OnNetworkMessage += OnNetworkMessage;
         }
 
         private void OnNetworkMessage(IntPtr dataPtr, ushort opCode, uint sourceActorId, uint targetActorId, NetworkMessageDirection direction)
@@ -35,7 +36,7 @@ namespace SimpleLogs
             }
 
             // here we're going to handle all packets if the switch "network_testing" is true
-            if (pluginInterface.Config.GetBool("network_testing"))
+            if (plugin.Configuration.network_testing)
             {
                 // Parse the packet
                 var packet = Marshal.PtrToStructure<TestPacket>(dataPtr);
@@ -61,25 +62,15 @@ namespace SimpleLogs
             try
             {
                 // decode the packet
-                header = Marshal.PtrToStructure<PacketHeader>(packet.Data);
-
-                IntPtr segmentHeaderPtr = IntPtr.Add(packet.Data, Marshal.SizeOf(typeof(PacketHeader)));
-                segmentHeader = Marshal.PtrToStructure<PacketSegmentHeader>(segmentHeaderPtr);
-
-                IntPtr ipcHeaderPtr = IntPtr.Add(segmentHeaderPtr, Marshal.SizeOf(typeof(PacketSegmentHeader)));
-                ipcHeader = Marshal.PtrToStructure<PacketIPCHeader>(ipcHeaderPtr);
-
-                IntPtr payloadPtr = IntPtr.Add(ipcHeaderPtr, Marshal.SizeOf(typeof(PacketIPCHeader)));
-                payload = Marshal.PtrToStructure<PacketPayload>(payloadPtr);
 
                 packetDecode.Header = header;
                 packetDecode.SegmentHeader = segmentHeader;
                 packetDecode.IPCHeader = ipcHeader;
                 packetDecode.Payload = payload;
 
-                if (PacketHeader.isCompressed == 1)
+                if (header.IsCompressed == 1)
                 {
-                    PacketPayloadDecomp.Data = DecompressPayload(PacketPayload.Data);
+                    var decomp = DecompressPayload(payload.Data);
                     packetDecode.PayloadDecomp = payloadDecomp;
                 }
             }
@@ -97,7 +88,7 @@ namespace SimpleLogs
 
         private void HandlePacketTesting(TestPacket packet)
         {
-            var timestamp = timer.GetTime();
+            var timestamp = timer.GetElapsedTime();
             
 
 
@@ -110,7 +101,10 @@ namespace SimpleLogs
         {
 
             // if its from the server, go forward with the packet
-            if (direction == NetworkMessageDirection.Server)
+            if (direction == NetworkMessageDirection.ZoneUp)
+            {
+                // TODO figure out opCodes for combat events
+            }
             {
                 // TODO figure out opCodes for combat events
             }
@@ -119,9 +113,12 @@ namespace SimpleLogs
         }
 
         // decompress packet payload here
-        private byte[] DecompressPayload(byte[] payload)
+        private System.IO.Stream DecompressPayload(byte[] payload)
         {
-            byte[] decomp_data = ZlibStream.UncompressBuffer(payload);
+            System.IO.Stream stream = new System.IO.MemoryStream(payload);
+            var decomp_data = ZLibStream.Synchronized(stream);
+            var archive = new ZipArchive(decomp_data);
+            archive.Entries[0].Open().CopyTo(decomp_data);
             return decomp_data;
         }
 
@@ -182,7 +179,7 @@ namespace SimpleLogs
             public PacketSegmentHeader SegmentHeader;
             public PacketIPCHeader IPCHeader;
             public PacketPayload Payload;
-            public PacketPayloadDecomp PayloadDecomp
+            public PacketPayloadDecomp PayloadDecomp;
         }
 
         private struct TestPacket

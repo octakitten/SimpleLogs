@@ -1,26 +1,60 @@
 {
   "version": 3,
   "targets": {
-    "net7.0": {}
+    "net7.0": {
+      "DalamudPackager/2.1.12": {
+        "type": "package",
+        "build": {
+          "build/DalamudPackager.props": {},
+          "build/DalamudPackager.targets": {}
+        },
+        "buildMultiTargeting": {
+          "buildMultiTargeting/DalamudPackager.props": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "DalamudPackager/2.1.12": {
+      "sha512": "Sc0PVxvgg4NQjcI8n10/VfUQBAS4O+Fw2pZrAqBdRMbthYGeogzu5+xmIGCGmsEZ/ukMOBuAqiNiB5qA3MRalg==",
+      "type": "package",
+      "path": "dalamudpackager/2.1.12",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "build/DalamudPackager.props",
+        "build/DalamudPackager.targets",
+        "buildMultiTargeting/DalamudPackager.props",
+        "dalamudpackager.2.1.12.nupkg.sha512",
+        "dalamudpackager.nuspec",
+        "tasks/net48/DalamudPackager.dll",
+        "tasks/net48/Newtonsoft.Json.dll",
+        "tasks/net48/YamlDotNet.dll",
+        "tasks/netstandard2.1/DalamudPackager.dll",
+        "tasks/netstandard2.1/Newtonsoft.Json.dll",
+        "tasks/netstandard2.1/YamlDotNet.dll"
+      ]
+    }
+  },
   "projectFileDependencyGroups": {
-    "net7.0": []
+    "net7.0": [
+      "DalamudPackager >= 2.1.12"
+    ]
   },
   "packageFolders": {
-    "/home/ghosty/.nuget/packages/": {}
+    "/home/ghost/.nuget/packages/": {}
   },
   "project": {
     "version": "0.0.0.1",
     "restore": {
-      "projectUniqueName": "/home/ghosty/Documents/Programming/FFXIV_Plugins/SimpleLogs/SimpleLogs/SimpleLogs.csproj",
+      "projectUniqueName": "/home/ghost/Documents/Programming/FFXIV/SimpleLogs/SimpleLogs/SimpleLogs.csproj",
       "projectName": "SimpleLogs",
-      "projectPath": "/home/ghosty/Documents/Programming/FFXIV_Plugins/SimpleLogs/SimpleLogs/SimpleLogs.csproj",
-      "packagesPath": "/home/ghosty/.nuget/packages/",
-      "outputPath": "/home/ghosty/Documents/Programming/FFXIV_Plugins/SimpleLogs/SimpleLogs/obj/",
+      "projectPath": "/home/ghost/Documents/Programming/FFXIV/SimpleLogs/SimpleLogs/SimpleLogs.csproj",
+      "packagesPath": "/home/ghost/.nuget/packages/",
+      "outputPath": "/home/ghost/Documents/Programming/FFXIV/SimpleLogs/SimpleLogs/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/ghosty/.nuget/NuGet/NuGet.Config"
+        "/home/ghost/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
@@ -38,11 +72,21 @@
         "warnAsError": [
           "NU1605"
         ]
+      },
+      "restoreLockProperties": {
+        "restorePackagesWithLockFile": "true",
+        "nuGetLockFilePath": ""
       }
     },
     "frameworks": {
       "net7.0": {
         "targetAlias": "net7.0",
+        "dependencies": {
+          "DalamudPackager": {
+            "target": "Package",
+            "version": "[2.1.12, )"
+          }
+        },
         "imports": [
           "net461",
           "net462",
@@ -59,7 +103,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/7.0.114/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/7.0.115/RuntimeIdentifierGraph.json"
       }
     }
   }

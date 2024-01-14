@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/home/ghosty/Documents/Programming/FFXIV_Plugins/SimpleLogs/SimpleLogs/SimpleLogs.csproj": {}
+    "/home/ghost/Documents/Programming/FFXIV/SimpleLogs/SimpleLogs/SimpleLogs.csproj": {}
   },
   "projects": {
-    "/home/ghosty/Documents/Programming/FFXIV_Plugins/SimpleLogs/SimpleLogs/SimpleLogs.csproj": {
+    "/home/ghost/Documents/Programming/FFXIV/SimpleLogs/SimpleLogs/SimpleLogs.csproj": {
       "version": "0.0.0.1",
       "restore": {
-        "projectUniqueName": "/home/ghosty/Documents/Programming/FFXIV_Plugins/SimpleLogs/SimpleLogs/SimpleLogs.csproj",
+        "projectUniqueName": "/home/ghost/Documents/Programming/FFXIV/SimpleLogs/SimpleLogs/SimpleLogs.csproj",
         "projectName": "SimpleLogs",
-        "projectPath": "/home/ghosty/Documents/Programming/FFXIV_Plugins/SimpleLogs/SimpleLogs/SimpleLogs.csproj",
-        "packagesPath": "/home/ghosty/.nuget/packages/",
-        "outputPath": "/home/ghosty/Documents/Programming/FFXIV_Plugins/SimpleLogs/SimpleLogs/obj/",
+        "projectPath": "/home/ghost/Documents/Programming/FFXIV/SimpleLogs/SimpleLogs/SimpleLogs.csproj",
+        "packagesPath": "/home/ghost/.nuget/packages/",
+        "outputPath": "/home/ghost/Documents/Programming/FFXIV/SimpleLogs/SimpleLogs/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/ghosty/.nuget/NuGet/NuGet.Config"
+          "/home/ghost/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
@@ -32,11 +32,21 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreLockProperties": {
+          "restorePackagesWithLockFile": "true",
+          "nuGetLockFilePath": ""
         }
       },
       "frameworks": {
         "net7.0": {
           "targetAlias": "net7.0",
+          "dependencies": {
+            "DalamudPackager": {
+              "target": "Package",
+              "version": "[2.1.12, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -53,7 +63,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/7.0.114/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/7.0.115/RuntimeIdentifierGraph.json"
         }
       }
     }
