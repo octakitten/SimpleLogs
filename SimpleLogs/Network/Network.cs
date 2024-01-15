@@ -7,44 +7,59 @@ using Dalamud.Logging;
 using System.IO.Compression;
 using SimpleLogs;
 
-namespace SimpleLogs
+namespace SimpleLogs.Network
 {
+    /*
+     * This class is responsible for handling network events
+     *
+     * The network events we're interested in are combat events
+     * We'll subscribe to the network events, sift out the ones we're interested in, then
+     * parse the information in them. Once we have the packet's information, we'll use it
+     * to calculate the damage of the combat event and send it as an event to the DamageMeter.
+     */
     public class Network
     {
         private Plugin plugin;
-        private Timer timer;
+        private Utilities.Timer timer;
 
-        public Network(Plugin plugin, Timer tmr)
+        public Network(Plugin plugin, Utilities.Timer tmr)
         {
-            timer = new Timer();
+            timer = new Utilities.Timer();
             this.plugin = plugin;
             this.timer = tmr;
 
             // Subscribe to the network events
+            plugin.GameNetwork.NetworkMessage += OnNetworkMessage;
         }
 
+        /*
+         * This method is called whenever a network event is received, duh.
+         *
+         * We're checking if it's a combat message we're interested in, if so, we send it on
+         * down the line.
+         */
         private void OnNetworkMessage(IntPtr dataPtr, ushort opCode, uint sourceActorId, uint targetActorId, NetworkMessageDirection direction)
         {
+            Packet packet = new Packet()
+            {
+                Data = dataPtr, opCode = opCode, sourceActorId = sourceActorId, targetActorId = targetActorId,
+                direction = direction
+            };
+            // send it to Testing if we're debugging
+            #if DEBUG
+            plugin.Testing.HandlePacket(packet);
+            #endif
+            
+            // otherwise, go down normal pipeline.
             // Check if the message is a combat event from the server
             if (IsCombatEvent(opCode, direction))
             {
                 // Parse the packet
-                var packet = Marshal.PtrToStructure<Packet>(dataPtr);
+                
 
                 // Handle the packet
                 HandlePacket(packet);
             }
-
-            // here we're going to handle all packets if the switch "network_testing" is true
-            if (plugin.Configuration.network_testing)
-            {
-                // Parse the packet
-                var packet = Marshal.PtrToStructure<TestPacket>(dataPtr);
-
-                // Handle the packet
-                HandlePacketTesting(packet);
-            }
-            return;
         }
 
         private void HandlePacket(Packet packet)
@@ -62,6 +77,10 @@ namespace SimpleLogs
             try
             {
                 // decode the packet
+                // TODO: come back to this after we've tested out how to decode the packet headers
+                // We'll need to make sure we're decoding the header correctly and that we 
+                // have the right opcodes.
+                
 
                 packetDecode.Header = header;
                 packetDecode.SegmentHeader = segmentHeader;
@@ -86,14 +105,6 @@ namespace SimpleLogs
 
         }
 
-        private void HandlePacketTesting(TestPacket packet)
-        {
-            var timestamp = timer.GetElapsedTime();
-            
-
-
-            return;
-        }
 
 
         // implement the IsCombatEvent method
@@ -113,26 +124,33 @@ namespace SimpleLogs
         }
 
         // decompress packet payload here
-        private System.IO.Stream DecompressPayload(byte[] payload)
+        private IntPtr DecompressPayload(IntPtr payload)
         {
-            System.IO.Stream stream = new System.IO.MemoryStream(payload);
+            System.IO.Stream stream = new System.IO.MemoryStream(payload.ToInt32());
             var decomp_data = ZLibStream.Synchronized(stream);
             var archive = new ZipArchive(decomp_data);
             archive.Entries[0].Open().CopyTo(decomp_data);
-            return decomp_data;
+            byte[] buffer = new byte[decomp_data.Length];
+            var dummy = decomp_data.Read(buffer, 0, buffer.Length);
+            Marshal.Copy(buffer, 0, payload, buffer.Length);
+            return payload;
         }
 
 
-        [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        private struct Packet
+        
+    }
+        public struct Packet
         {
-            public ushort Length;
-            public byte[] Data;
+            public IntPtr Data;
+            public ushort opCode;
+            public uint sourceActorId;
+            public uint targetActorId;
+            public NetworkMessageDirection direction;
         }
 
         // if the instructions laid out in the document i looked at are right, then these headers should work out just fine.
         // otherwise, we'll need to fix things
-        private struct PacketHeader
+        public struct PacketHeader
         {
             public ulong Magic;
             public ulong Magic2;
@@ -145,7 +163,7 @@ namespace SimpleLogs
             public uint Size02;
         }
 
-        private struct PacketSegmentHeader
+        public struct PacketSegmentHeader
         {
             public uint SourceActor;
             public uint TargetActor;
@@ -153,7 +171,7 @@ namespace SimpleLogs
             public ushort Padding;
         }
         
-        private struct PacketIPCHeader
+        public struct PacketIPCHeader
         {
             public ushort Reserved;
             public ushort Type03;
@@ -163,17 +181,17 @@ namespace SimpleLogs
             public uint Padding02;
         }
 
-        private struct PacketPayload
+        public struct PacketPayload
         {
-            public byte[] Data;
+            public IntPtr Data;
         }
 
-        private struct PacketPayloadDecomp
+        public struct PacketPayloadDecomp
         {
-            public byte[] Data;
+            public IntPtr Data;
         }
 
-        private struct PacketDecode
+        public struct PacketDecode
         {
             public PacketHeader Header;
             public PacketSegmentHeader SegmentHeader;
@@ -182,14 +200,4 @@ namespace SimpleLogs
             public PacketPayloadDecomp PayloadDecomp;
         }
 
-        private struct TestPacket
-        {
-            public ushort Length;
-            public byte[] Data;
-            public ushort opCode;
-            public uint sourceActorId;
-            public uint targetActorId;
-            public NetworkMessageDirection direction;
-        }
-    }
 }

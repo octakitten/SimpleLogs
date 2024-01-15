@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace SimpleLogs;
+namespace SimpleLogs.Utilities;
 
 
 public class DamageMeter
@@ -54,7 +54,10 @@ public class DamageMeter
     
     public void AddPartyMember(string name)
     {
-        plugin.Configuration.addedToParty += 1;
+        //if (plugin.Configuration.debuggingEnabled)
+        //{
+        //    plugin.Configuration.addedToParty += 1;
+        //}
         PartyMember newPlayer = new PartyMember();
         newPlayer.name = name;
         newPlayer.damage = 0;
@@ -67,8 +70,11 @@ public class DamageMeter
         {
             if (partyMembers[i].name == name)
             {
-                plugin.Configuration.addedDamage = true;
-                plugin.Configuration.addedDamageAmount = damage;
+                //if (plugin.Configuration.debuggingEnabled)
+                //{
+                //    plugin.Configuration.addedDamage = true;
+                //    plugin.Configuration.addedDamageAmount = damage;
+                //}
                 partyMembers[i].damage += damage;
                 partyMembers[i].dps = partyMembers[i].damage / GetFightDuration();
                 break;
@@ -83,7 +89,7 @@ public class DamageMeter
         if (count > 0)
         {
             duration = damageLog[count - 1].timestamp - damageLog[0].timestamp;
-            plugin.Configuration.latestFightDuration = duration;
+            //plugin.Configuration.latestFightDuration = duration;
         }
         return duration;
     }

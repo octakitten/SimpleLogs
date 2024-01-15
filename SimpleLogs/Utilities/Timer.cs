@@ -1,7 +1,7 @@
 using System;
 using System.Diagnostics;
 
-namespace SimpleLogs
+namespace SimpleLogs.Utilities
 {
     public class Timer
     {

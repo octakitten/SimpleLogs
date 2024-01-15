@@ -6,15 +6,37 @@ using Dalamud.Plugin;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SimpleLogs
+namespace SimpleLogs.Chat
 {
 
-    public class ChatCombatLogger
+    public class Log
     {
         private Plugin plugin;
         private ChatEvent lastEvent;
         private List<ChatEvent> chatLog = new List<ChatEvent>();
-        private Timer timer;
+        private Utilities.Timer timer;
+        private bool casting = false;
+        private string castingPlayer = "";
+        private const string castingType = "2091";
+        private const string debuffType = "2735";
+        private const string damageType1 = "2729";
+        private const string damageType2 = "2857";
+
+        private string[] debuffs =
+        {
+            "combust",
+            "combust ii",
+            "combust iii",
+            "aero",
+            "aero ii",
+            "dia",
+            "bio",
+            "bio ii",
+            "biolysis",
+            "eukrasian dosis",
+            "eukrasian dosis ii",
+            "eukrasian dosis iii",
+        };
         
         public struct ChatEvent
         {
@@ -24,9 +46,9 @@ namespace SimpleLogs
             public double timestamp;
         }
 
-        public ChatCombatLogger(Plugin plugin, Timer tmr)
+        public Log(Plugin plugin, Utilities.Timer tmr)
         {
-            timer = new Timer();
+            timer = new Utilities.Timer();
             this.plugin = plugin;
             this.timer = tmr;
             // Subscribe to the ChatMessage event
@@ -42,6 +64,20 @@ namespace SimpleLogs
             lastEvent.message = message.TextValue.ToLower();
             lastEvent.timestamp = timer.GetElapsedTime().TotalSeconds;
             chatLog.Add(lastEvent);
+        }
+
+        public void AnalyzeChatMessage(ChatEvent chatEvent)
+        {
+            if (casting)
+            {
+                HandleDamageEvent(castingPlayer, chatEvent);
+            }
+
+            if (chatEvent.type == "2091")
+            {
+                
+            }
+            
         }
 
         public void AnalyzeChatLog()
@@ -91,7 +127,7 @@ namespace SimpleLogs
 
         private void HandleDamageEvent(string player, ChatEvent cEvent)
         {
-            plugin.Configuration.handledDamageEvent = true;
+            //plugin.Configuration.handledDamageEvent = true;
             string[] words = cEvent.message.Split(' ');
             foreach (var word in words)
             {

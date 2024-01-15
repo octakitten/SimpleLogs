@@ -1,4 +1,5 @@
-﻿using Dalamud.Game.Command;
+﻿#define DEBUG // Comment this line to disable debug logging
+using Dalamud.Game.Command;
 using Dalamud.IoC;
 using Dalamud.Plugin;
 using System.IO;
@@ -21,15 +22,17 @@ namespace SimpleLogs
         public WindowSystem WindowSystem = new("SimpleLogs");
         public IGameNetwork GameNetwork { get; init; }
         public IChatGui ChatGui { get; init; }
-
+        #if DEBUG
+        public Network.Testing Testing { get; init; }
+        #endif
         private ConfigWindow ConfigWindow { get; init; }
         private MainWindow MainWindow { get; init; }
-        public Timer timer;
-        public DamageMeter DamageMeter { get; init; }
+        public Utilities.Timer timer;
+        public Utilities.DamageMeter DamageMeter { get; init; }
 
-        public ChatCombatLogger ChatLogger { get; init; }
+        public Chat.Log ChatLogger { get; init; }
 
-        private Network NetworkLogger { get; init; }
+        private Network.Network NetworkLogger { get; init; }
 
 
         public Plugin(
@@ -52,10 +55,13 @@ namespace SimpleLogs
             WindowSystem.AddWindow(ConfigWindow);
             WindowSystem.AddWindow(MainWindow);
 
-            this.timer = new Timer();
-            ChatLogger = new ChatCombatLogger(this, timer);
-            NetworkLogger = new Network(this, timer);
-            DamageMeter = new DamageMeter(this);
+            this.timer = new Utilities.Timer();
+            ChatLogger = new Chat.Log(this, timer);
+            NetworkLogger = new Network.Network(this, timer);
+            DamageMeter = new Utilities.DamageMeter(this);
+            #if DEBUG
+            Testing = new Network.Testing(this, timer);
+            #endif
 
             this.CommandManager.AddHandler(CommandName, new CommandInfo(OnCommand)
             {

@@ -12,15 +12,17 @@ namespace SimpleLogs
 
         public bool SomePropertyToBeSavedAndWithADefault { get; set; } = true;
         // some debugging variables here
-        public int addedToParty { get; set; } = 0;
         
-        public bool handledDamageEvent { get; set; } = false;
+        //public bool debuggingEnabled { get; set; } = true;
+        //public int addedToParty { get; set; } = 0;
         
-        public bool addedDamage { get; set; } = false;
+        //public bool handledDamageEvent { get; set; } = false;
         
-        public int addedDamageAmount { get; set; } = -1;
+        //public bool addedDamage { get; set; } = false;
         
-        public double latestFightDuration { get; set; } = -1;
+        //public int addedDamageAmount { get; set; } = -1;
+        
+        //public double latestFightDuration { get; set; } = -1;
         
         //end debugging variables
 

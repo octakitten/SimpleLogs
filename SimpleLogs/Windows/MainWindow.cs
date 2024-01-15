@@ -64,6 +64,7 @@ public class MainWindow : Window, IDisposable
         //ImGui.Text((plugin.ChatLogger.GetChatLog()[plugin.ChatLogger.GetChatLog().Count]).message);
         //ImGui.Text((plugin.ChatLogger.GetChatLog()[plugin.ChatLogger.GetChatLog().Count]).timestamp.ToString());
         //ImGui.Separator();
+        /*
         foreach (var entry in plugin.ChatLogger.GetChatLog())
         {
             ImGui.Text(entry.type);
@@ -71,10 +72,13 @@ public class MainWindow : Window, IDisposable
             ImGui.Text(entry.message);
             ImGui.Text(entry.timestamp.ToString());
         }
+        */
+        /*
         ImGui.Text($"Did we add a party member? {plugin.Configuration.addedToParty}");
         ImGui.Text($"Did we handle a damage event? {plugin.Configuration.handledDamageEvent}");
         ImGui.Text($"Did we add damage to a player? {plugin.Configuration.addedDamage}, {plugin.Configuration.addedDamageAmount}");
         ImGui.Text($"Latest fight duration? {plugin.Configuration.latestFightDuration}");
         ImGui.Text("Bottom text");
+        */
     }
 }
