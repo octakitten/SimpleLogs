@@ -17,6 +17,7 @@ namespace SimpleLogs.Chat
         private Utilities.Timer timer;
         private bool casting = false;
         private string castingPlayer = "";
+        private int castingPotency = -1;
         private const string castingType = "2091";
         private const string debuffType = "2735";
         private const string damageType1 = "2729";
@@ -37,8 +38,21 @@ namespace SimpleLogs.Chat
             "eukrasian dosis ii",
             "eukrasian dosis iii",
         };
+
+        private string[] abilities =
+        {
+            "malefic",
+            "malefic ii"
+        };
         
-        public struct ChatEvent
+        private int[] abilityPotencies =
+        {
+            150,
+            160
+        };
+    
+
+    public struct ChatEvent
         {
             public string type;
             public string sender;
@@ -73,7 +87,7 @@ namespace SimpleLogs.Chat
                 HandleDamageEvent(castingPlayer, chatEvent);
             }
 
-            if (chatEvent.type == "2091")
+            if (IsCastEvent(chatEvent))
             {
                 
             }
@@ -83,8 +97,6 @@ namespace SimpleLogs.Chat
         public void AnalyzeChatLog()
         {
             plugin.DamageMeter.Reset();
-            bool lastCast = false;
-            string lastPlayer = "";
             for (int entry = 0; entry < chatLog.Count; entry++)
             {
                 if (true)
@@ -92,34 +104,53 @@ namespace SimpleLogs.Chat
                     
                     string[] words = chatLog[entry].message.Split(' ');
                     int current = 0;
-                    if (lastCast == true)
+                    if (IsDebuffEvent(chatLog[entry]))
                     {
-                        HandleDamageEvent(lastPlayer, chatLog[entry]);
+                        
                     }
-                    else if (words[current] == "you" && ( words[current + 1] == "use" || words[current + 1] == "cast"))
+                    if (casting)
                     {
-                        lastCast = true;
-                        lastPlayer = "you";
+                        HandleDamageEvent(castingPlayer, chatLog[entry]);
+                    }
+                    else if (IsCastEvent(chatLog[entry]))
+                    {
+                        if (IsYouEvent(chatLog[entry]))
+                        {
+                            casting = true;
+                            castingPlayer = "you";
+                        }
+                        else
+                        {
+                            casting = true;
+                            castingPlayer = words[current] + " " + words[current + 1] + " " + words[current + 2];
+                        }
                     } 
-                    else if (words[current + 3] == "use" || words[current + 3] == "cast")
+                    else if (IsDamageEvent(chatLog[entry]))
                     {
-                        lastCast = true;
-                        lastPlayer = words[current] + " " + words[current + 1] + " " + words[current + 2];
+                        if (IsYouEvent(chatLog[entry]))
+                        {
+                            HandleDamageEvent("you", chatLog[entry]);
+                        }
+                        else
+                        {
+                            HandleDamageEvent(words[current] + " " + words[current + 1] + " " + words[current + 2], chatLog[entry]);
+                        }
                     }
-                    else if (words[current] == "you" && words[current + 1] == "hit")
+                    else if (IsAutoDmgEvent(chatLog[entry]))
                     {
-                        lastCast = false;
-                        HandleDamageEvent("you", chatLog[entry]);
-                    }
-                    else if (words[current + 3] == "hits")
-                    {
-                        lastCast = false;
-                        HandleDamageEvent(words[current] + " " + words[current + 1] + " " + words[current + 2], chatLog[entry]);
+                        casting = false;
+                        if (IsYouEvent(chatLog[entry]))
+                        {
+                            HandleDamageEvent("you", chatLog[entry]);
+                        }
+                        else
+                        {
+                            HandleDamageEvent(words[current] + " " + words[current + 1] + " " + words[current + 2], chatLog[entry]);
+                        }
                     }
                     else
                     {
-                        lastCast = false;
-                    
+                        casting = false;
                     }
                 }
             }
@@ -134,7 +165,7 @@ namespace SimpleLogs.Chat
                 try
                 {
                     int dmg = int.Parse(word);
-                    plugin.DamageMeter.HandleEvent(player, dmg, cEvent.timestamp);
+                    plugin.DamageMeter.HandleEvent(player, dmg, castingPotency, cEvent.timestamp);
                     break;
                 }
                 catch
@@ -142,6 +173,71 @@ namespace SimpleLogs.Chat
                     //do nothing if it fails
                 }
             }
+        }
+        
+        private bool IsCastEvent(ChatEvent cEvent)
+        {
+            if (cEvent.type == castingType)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        
+        private bool IsDebuffEvent(ChatEvent cEvent)
+        {
+            if (cEvent.type == debuffType)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        
+        private bool IsDamageEvent(ChatEvent cEvent)
+        {
+            if (cEvent.type == damageType1 || cEvent.type == damageType2)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private bool IsYouEvent(ChatEvent cEvent)
+        {
+            string[] words = cEvent.message.Split(' ');
+            if (words[0] == "you")
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private bool IsAutoDmgEvent(ChatEvent cEvent)
+        {
+            string[] words = cEvent.message.Split(' ');
+            if (words[0] == "you" && words[1] == "hit")
+            {
+                return true;
+            }
+            
+            if (words[3] == "hits")
+            {
+                return true;
+            }
+
+            return false;
         }
 
         public void Reset()

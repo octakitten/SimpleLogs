@@ -1,11 +1,60 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 
 namespace SimpleLogs.Utilities;
 
 
 public class DamageMeter
 {
+    private List<string> debuffs = new List<string>()
+    {
+        "combust",
+        "combust ii",
+        "combust iii",
+        "aero",
+        "aero ii",
+        "dia",
+        "bio",
+        "bio ii",
+        "biolysis",
+        "eukrasian dosis",
+        "eukrasian dosis ii",
+        "eukrasian dosis iii",
+    };
+    
+    private List<int> debuffPotencies = new List<int>()
+    {
+        40,
+        50,
+        55,
+        35,
+        55,
+        72,
+        20,
+        40,
+        70,
+        40,
+        60,
+        75,
+    };
+    
+    private List<int> debuffDurations = new List<int>()
+    {
+        30,
+        30,
+        30,
+        30,
+        30,
+        30,
+        30,
+        30,
+        30,
+        30,
+        30,
+        30,
+    };
+    
     public class PartyMember
     {
         public string name;
@@ -17,11 +66,20 @@ public class DamageMeter
     {
         public string name;
         public int damage;
+        public int potency;
+        public double timestamp;
+    }
+    
+    public class DebuffEntry
+    {
+        public string name;
+        public string debuff;
         public double timestamp;
     }
     
     private List<DamageEntry> damageLog;
     private List<PartyMember> partyMembers;
+    private List<DebuffEntry> debuffLog;
     private Plugin plugin;
     
     public DamageMeter(Plugin plugin)
@@ -31,11 +89,12 @@ public class DamageMeter
         this.partyMembers = new List<PartyMember>();
     }
     
-    public void AddDamageEntry(string name, int damage, double time)
+    public void AddDamageEntry(string name, int damage, int potency, double time)
     {
         DamageEntry newEntry = new DamageEntry();
         newEntry.name = name;
         newEntry.damage = damage;
+        newEntry.potency = potency;
         newEntry.timestamp = time;
         damageLog.Add(newEntry);
     }
@@ -50,6 +109,15 @@ public class DamageMeter
             }
         }
         return false;
+    }
+
+    public void AddDebuffEntry(string name, string debuff, double time)
+    {
+        DebuffEntry newDebuff = new DebuffEntry();
+        newDebuff.name = name;
+        newDebuff.debuff = debuff;
+        newDebuff.timestamp = time;
+        debuffLog.Add(newDebuff);
     }
     
     public void AddPartyMember(string name)
@@ -70,11 +138,7 @@ public class DamageMeter
         {
             if (partyMembers[i].name == name)
             {
-                //if (plugin.Configuration.debuggingEnabled)
-                //{
-                //    plugin.Configuration.addedDamage = true;
-                //    plugin.Configuration.addedDamageAmount = damage;
-                //}
+                
                 partyMembers[i].damage += damage;
                 partyMembers[i].dps = partyMembers[i].damage / GetFightDuration();
                 break;
@@ -110,18 +174,31 @@ public class DamageMeter
         partyMembers.Clear();
     }
 
-    public void HandleEvent(string name, int damage, double timestamp)
+    public void HandleEvent(string name, int damage, int potency, double timestamp)
     {
         if (IsPartyMember(name))
         {
             UpdatePartyMemberDamage(name, damage);
-            AddDamageEntry(name, damage, timestamp);
+            AddDamageEntry(name, damage, potency, timestamp);
         }
         else
         {
             AddPartyMember(name);
             UpdatePartyMemberDamage(name, damage);
-            AddDamageEntry(name, damage, timestamp);
+            AddDamageEntry(name, damage, potency, timestamp);
+        }
+    }
+
+    public void HandleDebuffEvent(string name, string debuff, double time)
+    {
+        if (IsPartyMember(name))
+        {
+            AddDebuffEntry(name, debuff, time);
+        }
+        else
+        {
+            AddPartyMember(name);
+            AddDebuffEntry(name, debuff, time);
         }
     }
     
