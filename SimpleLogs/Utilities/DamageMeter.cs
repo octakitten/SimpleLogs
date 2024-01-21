@@ -138,7 +138,7 @@ public class DamageMeter
         {
             if (partyMembers[i].name == name)
             {
-                
+                //TODO: debuff handling and approximation
                 partyMembers[i].damage += damage;
                 partyMembers[i].dps = partyMembers[i].damage / GetFightDuration();
                 break;
