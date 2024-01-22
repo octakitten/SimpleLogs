@@ -34,6 +34,13 @@ namespace SimpleLogs.Chat
                 "combust iii",
             };
             
+            public static int[] debuffPotencies = 
+            {
+                40,
+                50,
+                55
+            };
+            
             public static string[] abilities =
             {
                 "malefic",
@@ -71,15 +78,134 @@ namespace SimpleLogs.Chat
                 "aero ii",
                 "dia",
             };
+            
+            public static int[] debuffPotencies = 
+            {
+                30,
+                50,
+                65
+            };
 
             public static string[] abilities =
             {
-
+                "stone",
+                "aero",
+                "stone ii",
+                "aero ii",
+                "holy",
+                "stone iii",
+                "assize",
+                "stone iv",
+                "dia",
+                "glare",
+                "glare iii",
+                "holy iii"
             };
 
-            public static int[] potencies =
+            public static int[] abilityPotencies =
             {
+                140,
+                50,
+                190,
+                50,
+                140,
+                220,
+                400,
+                260,
+                65,
+                290,
+                210,
+                150
+            };
+        }
+        
+        public struct SCH 
+        {
+            public static string[] debuffs =
+            {
+                "bio",
+                "bio ii",
+                "biolysis",
+            };
+            
+            public static int[] debuffPotencies = 
+            {
+                20,
+                40,
+                70
+            };
+            
+            public static string[] abilities =
+            {
+                "ruin",
+                "ruin ii",
+                "energy drain",
+                "art of war",
+                "broil",
+                "broil ii",
+                "broil iii",
+                "broil iv",
+                "art of war ii"
+            };
+        
+            public static int[] abilityPotencies =
+            {
+                150,
+                220,
+                100,
+                165,
+                220,
+                240,
+                255,
+                295,
+                180,
+            };
+        }
 
+        public struct SGE
+        {
+            public static string[] debuffs =
+            {
+                "eukrasian dosis",
+                "eukrasian dosis ii",
+                "eukrasian dosis iii",
+            };
+            
+            public static int[] debuffPotencies = 
+            {
+                40,
+                60,
+                75
+            };
+
+            public static string[] abilities =
+            {
+                "dosis",
+                "phlegma",
+                "dyskrasia",
+                "toxikon",
+                "dosis ii",
+                "phlegma ii",
+                "dosis iii",
+                "phlegma iii",
+                "dyskrasia ii",
+                "toxikon ii",
+                "pneuma"
+            };
+
+            public static int[] abilityPotencies =
+            {
+                300,
+                400,
+                160,
+                300,
+                320,
+                490,
+                330,
+                600,
+                170,
+                330,
+                330
             };
         }
     }
@@ -126,18 +252,72 @@ namespace SimpleLogs.Chat
             lastEvent.message = message.TextValue.ToLower();
             lastEvent.timestamp = timer.GetElapsedTime().TotalSeconds;
             chatLog.Add(lastEvent);
+            AnalyzeChatMessage(lastEvent);
         }
 
         public void AnalyzeChatMessage(ChatEvent chatEvent)
         {
-            if (casting)
+            if (IsDebuffEvent(chatEvent))
+            {
+                casting = false;
+                HandleDebuffEvent(chatEvent);
+            }
+            else if (casting)
             {
                 HandleDamageEvent(castingPlayer, chatEvent);
             }
-
-            if (IsCastEvent(chatEvent))
+            else if (IsCastEvent(chatEvent))
             {
+                if (IsYouEvent(chatEvent))
+                {
+                    casting = true;
+                    castingPlayer = "you";
+                }
+                else
+                {
+                    casting = true;
+                    string[] dummy = chatEvent.message.Split(' ');
+                    castingPlayer = dummy[0] + " " + dummy[1] + " " + dummy[2];
                 
+                }
+            }
+            else if (IsDamageEvent(chatEvent))
+            {
+                ChatEvent newEvent = new ChatEvent();
+                newEvent.type = chatEvent.type;
+                newEvent.sender = chatEvent.sender;
+                newEvent.timestamp = chatEvent.timestamp;
+                newEvent.message = SanitizeDmgMsg(chatEvent.message);
+                if (IsYouEvent(newEvent))
+                {
+                    HandleDamageEvent("you", newEvent);
+                }
+                else
+                {
+                    HandleDamageEvent(castingPlayer, newEvent);
+                }
+            }
+            else if (IsAutoDmgEvent(chatEvent))
+            {
+                casting = false;
+                ChatEvent newEvent = new ChatEvent();
+                newEvent.type = chatEvent.type;
+                newEvent.sender = chatEvent.sender;
+                newEvent.timestamp = chatEvent.timestamp;
+                newEvent.message = SanitizeDmgMsg(chatEvent.message);
+                string[] newWords = newEvent.message.Split(" ");
+                if (IsYouEvent(chatEvent))
+                {
+                    HandleDamageEvent("you", chatEvent);
+                }
+                else
+                {
+                    HandleDamageEvent(newWords[0] + " " + newWords[1] + " " + newWords[2], newEvent);
+                }
+            }
+            else
+            {
+                casting = false;
             }
             
         }
@@ -163,6 +343,7 @@ namespace SimpleLogs.Chat
                         {
                             casting = true;
                             castingPlayer = "you";
+                            castingPotency = GetPotency(FindAbility(chatLog[entry]));
                         }
                         else
                         {
@@ -177,7 +358,6 @@ namespace SimpleLogs.Chat
                         newEvent.sender = chatLog[entry].sender;
                         newEvent.timestamp = chatLog[entry].timestamp;
                         newEvent.message = SanitizeDmgMsg(chatLog[entry].message);
-                        string[] newWords = newEvent.message.Split(" ");
                         if (IsYouEvent(newEvent))
                         {
                             HandleDamageEvent("you", newEvent);
@@ -235,27 +415,234 @@ namespace SimpleLogs.Chat
         {
             if (IsYouEvent(cEvent))
             {
-                for (var i = 0; i < Abilities.debuffs.Length; i++)
+                bool done = false;
+                foreach (var dbf in Abilities.AST.debuffs)
                 {
-                    if (cEvent.message.Contains(Abilities.debuffs[i]))
+                    if (cEvent.message.Contains(dbf))
                     {
-                        plugin.DamageMeter.HandleDebuffEvent("you", Abilities.debuffs[i], cEvent.timestamp);
+                        plugin.DamageMeter.HandleDebuffEvent("you", dbf, cEvent.timestamp);
+                        done = true;
                         break;
+                    }
+                }
+
+                if (!done)
+                {
+                    foreach (var dbf in Abilities.WHM.debuffs)
+                    {
+                        if (cEvent.message.Contains(dbf))
+                        {
+                            plugin.DamageMeter.HandleDebuffEvent("you", dbf, cEvent.timestamp);
+                            done = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (!done)
+                {
+                    foreach (var dbf in Abilities.SCH.debuffs)
+                    {
+                        if (cEvent.message.Contains(dbf))
+                        {
+                            plugin.DamageMeter.HandleDebuffEvent("you", dbf, cEvent.timestamp);
+                            done = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (!done)
+                {
+                    foreach (var dbf in Abilities.SGE.debuffs)
+                    {
+                        if (cEvent.message.Contains(dbf))
+                        {
+                            plugin.DamageMeter.HandleDebuffEvent("you", dbf, cEvent.timestamp);
+                            done = true;
+                            break;
+                        }
+                    }
+                }
+                
+            }
+            else
+            {
+                bool done = false;
+                foreach (var dbf in Abilities.AST.debuffs)
+                {
+                    if (cEvent.message.Contains(dbf))
+                    {
+                        string[] dummy = cEvent.message.Split(' ');
+                        plugin.DamageMeter.HandleDebuffEvent(dummy[0] + ' ' + dummy[1] + ' ' + dummy[2], dbf, cEvent.timestamp);
+                        done = true;
+                        break;
+                    }
+                }
+
+                if (!done)
+                {
+                    foreach (var dbf in Abilities.WHM.debuffs)
+                    {
+                        if (cEvent.message.Contains(dbf))
+                        {
+                            string[] dummy = cEvent.message.Split(' ');
+                            plugin.DamageMeter.HandleDebuffEvent(dummy[0] + ' ' + dummy[1] + ' ' + dummy[2], dbf, cEvent.timestamp);
+                            done = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (!done)
+                {
+                    foreach (var dbf in Abilities.SCH.debuffs)
+                    {
+                        if (cEvent.message.Contains(dbf))
+                        {
+                            string[] dummy = cEvent.message.Split(' ');
+                            plugin.DamageMeter.HandleDebuffEvent(dummy[0] + ' ' + dummy[1] + ' ' + dummy[2], dbf, cEvent.timestamp);
+                            done = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (!done)
+                {
+                    foreach (var dbf in Abilities.SGE.debuffs)
+                    {
+                        if (cEvent.message.Contains(dbf))
+                        {
+                            string[] dummy = cEvent.message.Split(' ');
+                            plugin.DamageMeter.HandleDebuffEvent(dummy[0] + ' ' + dummy[1] + ' ' + dummy[2], dbf, cEvent.timestamp);
+                            done = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        private string FindAbility(ChatEvent cEvent)
+        {
+            if (IsYouEvent(cEvent))
+            {
+                foreach (var abl in Abilities.AST.abilities)
+                {
+                    if (cEvent.message.Contains(abl))
+                    {
+                        return abl;
+                    }
+                }
+                foreach (var abl in Abilities.WHM.abilities)
+                {
+                    if (cEvent.message.Contains(abl))
+                    {
+                        return abl;
+                    }
+                }
+                foreach (var abl in Abilities.SCH.abilities)
+                {
+                    if (cEvent.message.Contains(abl))
+                    {
+                        return abl;
+                    }
+                }
+                foreach (var abl in Abilities.SGE.abilities)
+                {
+                    if (cEvent.message.Contains(abl))
+                    {
+                        return abl;
                     }
                 }
             }
             else
             {
-                for (var i = 0; i < Abilities.debuffs.Length; i++)
+                string newMsg = RemoveNameFromMsg(cEvent.message);
+                foreach (var abl in Abilities.AST.abilities)
                 {
-                    if (cEvent.message.Contains(Abilities.debuffs[i]))
+                    if (newMsg.Contains(abl))
                     {
-                        string[] dummy = cEvent.message.Split(' ');
-                        plugin.DamageMeter.HandleDebuffEvent(dummy[0] + ' ' + dummy[1] + ' ' + dummy[2], Abilities.debuffs[i], cEvent.timestamp);
-                        break;
+                        return abl;
                     }
                 }
+                foreach (var abl in Abilities.WHM.abilities)
+                {
+                    if (newMsg.Contains(abl))
+                    {
+                        return abl;
+                    }
+                }
+                foreach (var abl in Abilities.SCH.abilities)
+                {
+                    if (newMsg.Contains(abl))
+                    {
+                        return abl;
+                    }
+                }
+                foreach (var abl in Abilities.SGE.abilities)
+                {
+                    if (newMsg.Contains(abl))
+                    {
+                        return abl;
+                    }
+                }
+                
             }
+
+            return "failed!";
+        }
+
+        private int GetPotency(string ability)
+        {
+            int ptn = -1;
+            for (int i = 0; i < Abilities.AST.abilities.Length; i++)
+            {
+                if (ability == Abilities.AST.abilities[i])
+                {
+                    ptn = Abilities.AST.abilityPotencies[i];
+                    return ptn;
+                }
+            }
+            for (int i = 0; i < Abilities.WHM.abilities.Length; i++)
+            {
+                if (ability == Abilities.WHM.abilities[i])
+                {
+                    ptn = Abilities.WHM.abilityPotencies[i];
+                    return ptn;
+                }
+            }
+            for (int i = 0; i < Abilities.SCH.abilities.Length; i++)
+            {
+                if (ability == Abilities.SCH.abilities[i])
+                {
+                    ptn = Abilities.SCH.abilityPotencies[i];
+                    return ptn;
+                }
+            }
+            for (int i = 0; i < Abilities.SGE.abilities.Length; i++)
+            {
+                if (ability == Abilities.SGE.abilities[i])
+                {
+                    ptn = Abilities.SGE.abilityPotencies[i];
+                    return ptn;
+                }
+            }
+
+            return ptn;
+        }
+
+        private string RemoveNameFromMsg(string msg)
+        {
+            string[] words = msg.Split(' ');
+            string newMsg = "";
+            for (int i = 2; i < words.Length; i++)
+            {
+                newMsg += words[i] + " ";
+            }
+
+            return newMsg;
         }
         
         private bool IsCastEvent(ChatEvent cEvent)
