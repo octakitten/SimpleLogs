@@ -38,9 +38,9 @@ namespace SimpleLogs
 
         // the below exist just to make saving less cumbersome
         [NonSerialized]
-        private DalamudPluginInterface? PluginInterface;
+        public IDalamudPluginInterface? PluginInterface;
 
-        public void Initialize(DalamudPluginInterface pluginInterface)
+        public void Initialize(IDalamudPluginInterface pluginInterface)
         {
             this.PluginInterface = pluginInterface;
         }

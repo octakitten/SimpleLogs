@@ -2,6 +2,8 @@ using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text;
 using System.Collections.Generic;
 using System.Linq;
+using Dalamud.Plugin.Services;
+using System;
 
 namespace SimpleLogs.Chat
 {
@@ -239,21 +241,25 @@ namespace SimpleLogs.Chat
             timer = new Utilities.Timer();
             this.plugin = plugin;
             this.timer = tmr;
+            // ChatEvent lastEvent = new ChatEvent();
+            // delegate = new IChatGui.OnMessageDelegate(OnChatMessage);
             // Subscribe to the ChatMessage event
-            this.plugin.ChatGui.ChatMessage += OnChatMessage;
+            this.plugin.ChatGui.ChatMessage += new IChatGui.OnMessageDelegate(OnChatMessage);
         }
 
-        private void OnChatMessage(XivChatType type, uint senderId, ref SeString sender, ref SeString message,
-            ref bool isHandled)
+        private void OnChatMessage(XivChatType type, int timestamp, ref SeString sender, ref SeString message, ref bool isHandled)
         {
             // Record the chat message to the chat log
-            lastEvent.type = type.ToString().ToLower();
-            lastEvent.sender = sender.TextValue.ToLower();
-            lastEvent.message = message.TextValue.ToLower();
-            lastEvent.timestamp = timer.GetElapsedTime().TotalSeconds;
-            chatLog.Add(lastEvent);
-            AnalyzeChatMessage(lastEvent);
+            ChatEvent newEvent = new ChatEvent();
+            newEvent.type = type.ToString().ToLower();
+            newEvent.sender = sender.ToString().ToLower();
+            newEvent.message = message.ToString().ToLower();
+            newEvent.timestamp = timer.GetElapsedTime().TotalSeconds;
+            lastEvent = newEvent;
+            chatLog.Add(newEvent);
+            AnalyzeChatMessage(newEvent);
         }
+
 
         public void AnalyzeChatMessage(ChatEvent chatEvent)
         {
@@ -762,7 +768,7 @@ namespace SimpleLogs.Chat
         public void Dispose()
         {
             // Unsubscribe from the ChatMessage event
-            this.plugin.ChatGui.ChatMessage -= OnChatMessage;
+            this.plugin.ChatGui.ChatMessage -= new IChatGui.OnMessageDelegate(OnChatMessage);
         }
     }
 

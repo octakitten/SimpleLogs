@@ -16,7 +16,7 @@ namespace SimpleLogs
         public string Name => "Simple Logs";
         private const string CommandName = "/slogs";
 
-        private DalamudPluginInterface PluginInterface { get; init; }
+        private IDalamudPluginInterface PluginInterface { get; init; }
         private ICommandManager CommandManager { get; init; }
         public Configuration Configuration { get; init; }
         public WindowSystem WindowSystem = new("SimpleLogs");
@@ -36,10 +36,10 @@ namespace SimpleLogs
 
 
         public Plugin(
-            [RequiredVersion("1.0")] DalamudPluginInterface pluginInterface,
-            [RequiredVersion("1.0")] ICommandManager commandManager,
-            [RequiredVersion("1.0")] IGameNetwork gameNetwork,
-            [RequiredVersion("1.0")] IChatGui chatGui)
+            IDalamudPluginInterface pluginInterface,
+            ICommandManager commandManager,
+            IGameNetwork gameNetwork,
+            IChatGui chatGui)
         {
             this.PluginInterface = pluginInterface;
             this.CommandManager = commandManager;

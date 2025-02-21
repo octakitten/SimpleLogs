@@ -96,7 +96,7 @@ namespace SimpleLogs.Network
             catch (Exception e)
             {
                 // if we get an exception, log it and return
-                PluginLog.LogError(e.ToString());
+                // PluginLog.LogError(e.ToString());
                 return;
             }
             
