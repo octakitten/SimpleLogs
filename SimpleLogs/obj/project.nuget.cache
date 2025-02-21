@@ -1,10 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "cqYEprfO5T6cq69TrRbIQj78m5pYeWWIOk8kTRDyS3c6iqhxJ1jCxYUl9U94cYmp/ugJHOhIoNiDJgaM2U2IDA==",
+  "dgSpecHash": "Zw4DlwZPfEg=",
   "success": true,
-  "projectFilePath": "/home/ghost/Documents/Programming/FFXIV/SimpleLogs/SimpleLogs/SimpleLogs.csproj",
+  "projectFilePath": "/run/media/ghost/Rat/Coding/slogs/SimpleLogs/SimpleLogs/SimpleLogs.csproj",
   "expectedPackageFiles": [
-    "/home/ghost/.nuget/packages/dalamudpackager/2.1.12/dalamudpackager.2.1.12.nupkg.sha512"
+    "/home/ghost/.nuget/packages/dalamudpackager/11.0.0/dalamudpackager.11.0.0.nupkg.sha512",
+    "/home/ghost/.nuget/packages/microsoft.netcore.app.ref/8.0.13/microsoft.netcore.app.ref.8.0.13.nupkg.sha512",
+    "/home/ghost/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.13/microsoft.aspnetcore.app.ref.8.0.13.nupkg.sha512"
   ],
   "logs": []
 }

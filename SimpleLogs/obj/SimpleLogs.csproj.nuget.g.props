@@ -7,12 +7,12 @@
     <NuGetPackageRoot Condition=" '$(NuGetPackageRoot)' == '' ">/home/ghost/.nuget/packages/</NuGetPackageRoot>
     <NuGetPackageFolders Condition=" '$(NuGetPackageFolders)' == '' ">/home/ghost/.nuget/packages/</NuGetPackageFolders>
     <NuGetProjectStyle Condition=" '$(NuGetProjectStyle)' == '' ">PackageReference</NuGetProjectStyle>
-    <NuGetToolVersion Condition=" '$(NuGetToolVersion)' == '' ">6.8.0</NuGetToolVersion>
+    <NuGetToolVersion Condition=" '$(NuGetToolVersion)' == '' ">6.12.2</NuGetToolVersion>
   </PropertyGroup>
   <ItemGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
     <SourceRoot Include="/home/ghost/.nuget/packages/" />
   </ItemGroup>
   <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <Import Project="$(NuGetPackageRoot)dalamudpackager/2.1.12/build/DalamudPackager.props" Condition="Exists('$(NuGetPackageRoot)dalamudpackager/2.1.12/build/DalamudPackager.props')" />
+    <Import Project="$(NuGetPackageRoot)dalamudpackager/11.0.0/build/DalamudPackager.props" Condition="Exists('$(NuGetPackageRoot)dalamudpackager/11.0.0/build/DalamudPackager.props')" />
   </ImportGroup>
 </Project>

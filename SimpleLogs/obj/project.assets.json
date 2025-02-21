@@ -1,8 +1,8 @@
 {
   "version": 3,
   "targets": {
-    "net7.0": {
-      "DalamudPackager/2.1.12": {
+    "net8.0": {
+      "DalamudPackager/11.0.0": {
         "type": "package",
         "build": {
           "build/DalamudPackager.props": {},
@@ -15,17 +15,17 @@
     }
   },
   "libraries": {
-    "DalamudPackager/2.1.12": {
-      "sha512": "Sc0PVxvgg4NQjcI8n10/VfUQBAS4O+Fw2pZrAqBdRMbthYGeogzu5+xmIGCGmsEZ/ukMOBuAqiNiB5qA3MRalg==",
+    "DalamudPackager/11.0.0": {
+      "sha512": "bjT7XUlhIJSmsE/O76b7weUX+evvGQctbQB8aKXt94o+oPWxHpCepxAGMs7Thow3AzCyqWs7cOpp9/2wcgRRQA==",
       "type": "package",
-      "path": "dalamudpackager/2.1.12",
+      "path": "dalamudpackager/11.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "build/DalamudPackager.props",
         "build/DalamudPackager.targets",
         "buildMultiTargeting/DalamudPackager.props",
-        "dalamudpackager.2.1.12.nupkg.sha512",
+        "dalamudpackager.11.0.0.nupkg.sha512",
         "dalamudpackager.nuspec",
         "tasks/net48/DalamudPackager.dll",
         "tasks/net48/Newtonsoft.Json.dll",
@@ -37,8 +37,8 @@
     }
   },
   "projectFileDependencyGroups": {
-    "net7.0": [
-      "DalamudPackager >= 2.1.12"
+    "net8.0": [
+      "DalamudPackager >= 11.0.0"
     ]
   },
   "packageFolders": {
@@ -47,24 +47,24 @@
   "project": {
     "version": "0.0.0.1",
     "restore": {
-      "projectUniqueName": "/home/ghost/Documents/Programming/FFXIV/SimpleLogs/SimpleLogs/SimpleLogs.csproj",
+      "projectUniqueName": "/run/media/ghost/Rat/Coding/slogs/SimpleLogs/SimpleLogs/SimpleLogs.csproj",
       "projectName": "SimpleLogs",
-      "projectPath": "/home/ghost/Documents/Programming/FFXIV/SimpleLogs/SimpleLogs/SimpleLogs.csproj",
+      "projectPath": "/run/media/ghost/Rat/Coding/slogs/SimpleLogs/SimpleLogs/SimpleLogs.csproj",
       "packagesPath": "/home/ghost/.nuget/packages/",
-      "outputPath": "/home/ghost/Documents/Programming/FFXIV/SimpleLogs/SimpleLogs/obj/",
+      "outputPath": "/run/media/ghost/Rat/Coding/slogs/SimpleLogs/SimpleLogs/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/ghost/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
-        "net7.0"
+        "net8.0"
       ],
       "sources": {
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
-        "net7.0": {
-          "targetAlias": "net7.0",
+        "net8.0": {
+          "targetAlias": "net8.0",
           "projectReferences": {}
         }
       },
@@ -74,17 +74,22 @@
         ]
       },
       "restoreLockProperties": {
-        "restorePackagesWithLockFile": "true",
-        "nuGetLockFilePath": ""
-      }
+        "restorePackagesWithLockFile": "true"
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
+      },
+      "SdkAnalysisLevel": "9.0.100"
     },
     "frameworks": {
-      "net7.0": {
-        "targetAlias": "net7.0",
+      "net8.0": {
+        "targetAlias": "net8.0",
         "dependencies": {
           "DalamudPackager": {
             "target": "Package",
-            "version": "[2.1.12, )"
+            "version": "[11.0.0, )"
           }
         },
         "imports": [
@@ -98,12 +103,22 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[8.0.13, 8.0.13]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[8.0.13, 8.0.13]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/7.0.115/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/9.0.103/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
