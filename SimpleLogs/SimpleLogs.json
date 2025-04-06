@@ -9,5 +9,10 @@
     "simple",
     "logs",
     "octakitten"
-  ]
+  ],
+  "DalamudApiLevel": 12,
+  "DownloadLinkInstall": "https://github.com/octakitten/SimpleLogs/releases/download/alpha1.0.0/SimpleLogs.zip",
+  "DownloadLinkTesting": "https://github.com/octakitten/SimpleLogs/releases/download/alpha1.0.0/SimpleLogs.zip",
+  "DownloadLinkUpdate": "https://github.com/octakitten/SimpleLogs/releases/download/alpha1.0.0/SimpleLogs.zip"
+
 }
