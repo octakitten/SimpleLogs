@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Dalamud.Plugin.Services;
 using System;
+using Lumina.Excel.Sheets;
 
 namespace SimpleLogs.Chat
 {
@@ -38,9 +39,9 @@ namespace SimpleLogs.Chat
             
             public static int[] debuffPotencies = 
             {
-                40,
                 50,
-                55
+                60,
+                70
             };
             
             public static string[] abilities =
@@ -54,7 +55,9 @@ namespace SimpleLogs.Chat
                 "lord of crowns",
                 "malefic iv",
                 "fall malefic",
-                "gravity ii"
+                "gravity ii",
+                "macrocosmos",
+                "oracle"
             };
         
             public static int[] abilityPotencies =
@@ -65,10 +68,12 @@ namespace SimpleLogs.Chat
                 205,
                 310,
                 190,
-                250,
+                400,
                 230,
-                250,
-                130
+                270,
+                140,
+                270,
+                860
             };
         }
 
@@ -85,7 +90,7 @@ namespace SimpleLogs.Chat
             {
                 30,
                 50,
-                65
+                80
             };
 
             public static string[] abilities =
@@ -101,7 +106,9 @@ namespace SimpleLogs.Chat
                 "dia",
                 "glare",
                 "glare iii",
-                "holy iii"
+                "holy iii",
+                "glare iv",
+                "afflatus misery"
             };
 
             public static int[] abilityPotencies =
@@ -114,10 +121,12 @@ namespace SimpleLogs.Chat
                 220,
                 400,
                 260,
-                65,
+                80,
                 290,
-                210,
-                150
+                340,
+                150,
+                640,
+                1360
             };
         }
         
@@ -128,13 +137,15 @@ namespace SimpleLogs.Chat
                 "bio",
                 "bio ii",
                 "biolysis",
+                "baneful impaction"
             };
             
             public static int[] debuffPotencies = 
             {
                 20,
                 40,
-                70
+                80,
+                140
             };
             
             public static string[] abilities =
@@ -159,7 +170,7 @@ namespace SimpleLogs.Chat
                 220,
                 240,
                 255,
-                295,
+                310,
                 180,
             };
         }
@@ -171,13 +182,15 @@ namespace SimpleLogs.Chat
                 "eukrasian dosis",
                 "eukrasian dosis ii",
                 "eukrasian dosis iii",
+                "eukrasian dyskrasia"
             };
             
             public static int[] debuffPotencies = 
             {
                 40,
                 60,
-                75
+                80,
+                40
             };
 
             public static string[] abilities =
@@ -192,7 +205,8 @@ namespace SimpleLogs.Chat
                 "phlegma iii",
                 "dyskrasia ii",
                 "toxikon ii",
-                "pneuma"
+                "pneuma",
+                "psyche"
             };
 
             public static int[] abilityPotencies =
@@ -203,13 +217,245 @@ namespace SimpleLogs.Chat
                 300,
                 320,
                 490,
-                330,
+                370,
                 600,
                 170,
-                330,
-                330
+                370,
+                370,
+                600
             };
         }
+
+        public struct SAM
+        {
+            public static string[] debuffs = 
+            {
+                "higanbana"
+            };
+            
+            public static int[] debuffPotencies = 
+            {
+                50
+            };
+
+            public static string[] abilities =
+            {
+                "hakaze",
+                "jinpu",
+                "enpi",
+                "shifu",
+                "fuga",
+                "gekko",
+                "higanbana",
+                "tenka goken",
+                "midare setsugekka",
+                "mangetsu",
+                "kasha",
+                "oka",
+                "yukikaze",
+                "hissatsu: shinten",
+                "hissatsu: gyoten",
+                "hissatsu: yaten",
+                "hissatsu: kyuten",
+                "hissatsu: guren",
+                "hissatsu: senei",
+                "shoha",
+                "fuko",
+                "ogi namikiri",
+                "kaeshi: namikiri",
+                "gyofu",
+                "zanshin",
+                "kaeshi: goken",
+                "kaeshi: setsugekka",
+                "tendo goken"
+            };
+
+	    public static int[] abilityPotencies =
+	    {
+		200,
+		300,
+		270,
+		300,
+		90,
+		420,
+		200,
+		300,
+		640,
+		120,
+		420,
+		120,
+		340,
+		250,
+		100,
+		100,
+		100,
+		400,
+		800,
+		640,
+		100,
+		1000,
+		1000,
+		240,
+		940,
+		300,
+		640,
+		410
+	    };
+        }
+
+	public struct BRD
+	{
+	    public static string[] debuffs = 
+	    {
+		"venomous bite",
+		"windbite",
+		"caustic bite",
+		"stormbite"
+	    };
+
+	    public static int[] debuffPotencies = 
+	    {
+		15,
+		20,
+		20,
+		25
+	    };
+
+	    public static string[] abilities = 
+	    {
+		"heavy shot",
+		"straight shot",
+		"venomous bite",
+		"bloodletter",
+		"quick nock",
+		"wide volley",
+		"windbite",
+		"rain of death",
+		"pitch perfect",
+		"empyreal arrow",
+		"iron jaws",
+		"sidewinder",
+		"caustic bite",
+		"stormbite",
+		"refulgent arrow",
+		"shadowbite",
+		"burst shot",
+		"apex arrow",
+		"ladonsbite",
+		"blast arrow",
+		"heartbreak shot",
+		"resonant arrow",
+		"radiant encore",
+	    };
+
+	    public static int[] abilityPotencies = 
+	    {
+		160,
+		200,
+		100,
+		130,
+		110,
+		140,
+		60,
+		100,
+		360,
+		260,
+		100,
+		400,
+		150,
+		100,
+		280,
+		180,
+		220,
+		600,
+		140,
+		600,
+		180,
+		600,
+		900
+	    };
+	}
+
+	public struct BLM
+	{
+	    public static string[] debuffs = 
+         	{
+		    "thunder",
+		    "thunder ii",
+		    "thunder iii",
+		    "thunder iv",
+		    "high thunder",
+		    "high thunder ii"
+		};
+
+	    public static int[] debuffPotencies = 
+	    {
+		45,
+		30,
+		50,
+		35,
+		60,
+		40
+	    };
+
+	    public static string[] abilities = 
+	    {
+		"blizzard",
+		"fire",
+		"thunder",
+		"blizzard ii",
+		"scathe",
+		"fire ii",
+		"thunder ii",
+		"fire iii",
+		"blizzard iii",
+		"freeze",
+		"thunder iii",
+		"flare",
+		"blizzard iv",
+		"fire iv",
+		"thunder iv",
+		"foul",
+		"despair",
+		"xenoglossy",
+		"high fire ii",
+		"high blizzard ii",
+		"paradox",
+		"high thunder",
+		"high thunder ii",
+		"flare star"
+	    };
+
+	    public static int[] abilityPotencies = 
+	    {
+		180,
+		180,
+		100,
+		80,
+		100,
+		80,
+		60,
+		290,
+		290,
+		120,
+		120,
+		240,
+		300,
+		300,
+		80,
+		600,
+		350,
+		890,
+		100,
+		100,
+		540,
+		150,
+		100,
+		500
+	    };
+
+	}
+        
     }
 
     public class Log

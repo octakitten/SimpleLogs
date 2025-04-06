@@ -19,25 +19,51 @@ public class DamageMeter
         "bio",
         "bio ii",
         "biolysis",
+        "baneful impaction",
         "eukrasian dosis",
         "eukrasian dosis ii",
         "eukrasian dosis iii",
+        "eukrasian dyskrasia",
+        "higanbana",
+        "venomous bite",
+        "windbite",
+        "caustic bite",
+        "stormbite",
+        "thunder",
+        "thunder ii",
+        "thunder iii",
+        "thunder iv",
+        "high thunder",
+        "high thunder ii",
     };
     
     private List<int> debuffPotencies = new List<int>()
     {
-        40,
         50,
-        55,
-        35,
-        55,
-        72,
+        60,
+        70,
+        30,
+        50,
+        80,
         20,
         40,
-        70,
+        80,
+        140,
         40,
         60,
-        75,
+        80,
+        40,
+        50,
+        15,
+        20,
+        20,
+        25,
+        45,
+        30,
+        50,
+        35,
+        60,
+        40
     };
     
     private List<int> debuffDurations = new List<int>()
@@ -51,9 +77,16 @@ public class DamageMeter
         30,
         30,
         30,
+        15,
         30,
         30,
         30,
+        30,
+        60,
+        45,
+        45,
+        45,
+        45
     };
     
     public class PartyMember
@@ -287,6 +320,14 @@ public class DamageMeter
     private bool IsSecondDOT(DebuffEntry debuff)
     {
         if (debuff.debuff == "windbite")
+        {
+            return true;
+        }
+        if (debuff.debuff == "stormbite")
+        {
+            return true;
+        }
+        if (debuff.debuff == "baneful impaction")
         {
             return true;
         }
