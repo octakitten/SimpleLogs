@@ -10,5 +10,8 @@
     "logs",
     "octakitten"
   ],
-  "DalamudApiLevel": 12
+  "DalamudApiLevel": 12,
+  "DownloadLinkInstall": "https://github.com/octakitten/SimpleLogs/blob/main/SimpleLogs/bin/x64/Debug/SimpleLogs.dll",
+  "DownloadLinkTesting": "https://github.com/octakitten/SimpleLogs/blob/main/SimpleLogs/bin/x64/Debug/SimpleLogs.dll",
+  "DownloadLinkUpdate": "https://github.com/octakitten/SimpleLogs/blob/main/SimpleLogs/bin/x64/Debug/SimpleLogs.dll"
 }
