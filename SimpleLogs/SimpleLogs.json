@@ -2,7 +2,6 @@
   {
     "Author": "octakitten",
     "Name": "Simple Logs",
-    "Version": "0.0.0.1",
     "Punchline": "Logging, but simple.",
     "Description": "Parses combat data to give a simple readout of dps, hps, damage taken, and other important information about an encounter.",
     "InternalName": "SimpleLogs",

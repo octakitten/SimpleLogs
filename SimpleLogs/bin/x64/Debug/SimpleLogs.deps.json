@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v9.0": {
-      "SimpleLogs/0.0.0.1": {
+      "SimpleLogs/1.0.0": {
         "dependencies": {
           "DalamudPackager": "12.0.0",
           "DotNet.ReproducibleBuilds": "1.2.25"
@@ -20,7 +20,7 @@
     }
   },
   "libraries": {
-    "SimpleLogs/0.0.0.1": {
+    "SimpleLogs/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
