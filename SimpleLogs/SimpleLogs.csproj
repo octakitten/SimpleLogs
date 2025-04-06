@@ -1,32 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="Dalamud.Plugin.Bootstrap.targets"/>
+<Project Sdk="Dalamud.NET.Sdk/12.0.2">
 
   <PropertyGroup>
     <Authors>octakitten</Authors>
-    <Company></Company>
-    <Version>0.0.0.1</Version>
+    <Version>0.1.0</Version>
     <Description>A simple logging plugin.</Description>
     <Copyright>octakitten</Copyright>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net9.0-windows</TargetFramework>
     <PackageProjectUrl>http://github.com/octakitten/SimpleLogs</PackageProjectUrl>
     <PackageLicenseExpression>AGPL-3.0-or-later</PackageLicenseExpression>
-    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="DalamudPackager" Version="12.0.0" />
-    <Reference Include="Dalamud">
-      <HintPath>$(DalamudLibPath)Dalamud.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="FFXIVClientStructs">
-      <HintPath>$(DalamudLibPath)FFXIVClientStructs.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="InteropGenerator.Runtime">
-      <HintPath>$(DalamudLibPath)InteropGenerator.Runtime.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
-  </ItemGroup>
+    <ItemGroup>
+        <Reference Include="Dalamud">
+            <Private>false</Private>
+            <HintPath>$(DalamudLibPath)\Dalamud.dll</HintPath>
+        </Reference>
+        <Reference Include="FFXIVClientStructs">
+            <Private>false</Private>
+            <HintPath>$(DalamudLibPath)\FFXIVClientStructs.dll</HintPath>
+        </Reference>
+        <Reference Include="InteropGenerator.Runtime">
+            <Private>false</Private>
+            <HintPath>$(DalamudLibPath)InteropGenerator.Runtime.dll</HintPath>
+        </Reference>
+    </ItemGroup>
 </Project>

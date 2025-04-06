@@ -8,12 +8,14 @@ namespace SimpleLogs.Windows;
 public class ConfigWindow : Window, IDisposable
 {
     private Configuration Configuration;
+    private Plugin plugin;
 
     public ConfigWindow(Plugin plugin) : base(
         "Simple Logs Config",
         ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoScrollbar |
         ImGuiWindowFlags.NoScrollWithMouse)
     {
+        this.plugin = plugin;
         this.Size = new Vector2(232, 75);
         this.SizeCondition = ImGuiCond.Always;
 
@@ -26,9 +28,10 @@ public class ConfigWindow : Window, IDisposable
     {
         // can't ref a property, so use a local copy
         var configValue = this.Configuration.SomePropertyToBeSavedAndWithADefault;
-        if (ImGui.Checkbox("Random Config Bool", ref configValue))
+        if (ImGui.Checkbox("This button does nothing... unless?", ref configValue))
         {
             this.Configuration.SomePropertyToBeSavedAndWithADefault = configValue;
+            this.plugin.MainWindow.IsOpen = configValue;
             // can save immediately on change, if you don't want to provide a "Save and Close" button
             this.Configuration.Save();
         }

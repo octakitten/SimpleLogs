@@ -1,13 +1,10 @@
 ﻿#define DEBUG // Comment this line to disable debug logging
 using Dalamud.Game.Command;
-using Dalamud.IoC;
 using Dalamud.Plugin;
-using System.IO;
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin.Services;
 using SimpleLogs.Windows;
-using Dalamud.Game.Gui;
-using SimpleLogs;
+using Dalamud.Interface;
 
 namespace SimpleLogs
 {
@@ -25,8 +22,8 @@ namespace SimpleLogs
         #if DEBUG
         public Network.Testing Testing { get; init; }
         #endif
-        private ConfigWindow ConfigWindow { get; init; }
-        private MainWindow MainWindow { get; init; }
+        public ConfigWindow ConfigWindow { get; init; }
+        public MainWindow MainWindow { get; init; }
         public Utilities.Timer timer;
         public Utilities.DamageMeter DamageMeter { get; init; }
 
@@ -65,11 +62,12 @@ namespace SimpleLogs
 
             this.CommandManager.AddHandler(CommandName, new CommandInfo(OnCommand)
             {
-                HelpMessage = "A useful message to display in /xlhelp"
+                HelpMessage = "Open the SLogs Config Window."
             });
 
             this.PluginInterface.UiBuilder.Draw += DrawUI;
             this.PluginInterface.UiBuilder.OpenConfigUi += DrawConfigUI;
+            this.PluginInterface.UiBuilder.OpenMainUi += DrawMainUI;
         }
 
         public void Dispose()
@@ -90,9 +88,14 @@ namespace SimpleLogs
             MainWindow.IsOpen = true;
         }
 
-        private void DrawUI()
+        public void DrawUI()
         {
             this.WindowSystem.Draw();
+        }
+
+        public void DrawMainUI()
+        {
+            MainWindow.IsOpen = true;
         }
 
         public void DrawConfigUI()
