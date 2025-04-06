@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCopyrightAttribute("octakitten")]
 [assembly: System.Reflection.AssemblyDescriptionAttribute("A simple logging plugin.")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("0.0.0.1")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("0.0.0.1+c819be9a1e5bb9da24a9d8dba94660f1b383347d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("0.0.0.1+ff5026e05bf500d062e7ccae48304ad347a026dd")]
 [assembly: System.Reflection.AssemblyProductAttribute("SimpleLogs")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SimpleLogs")]
 [assembly: System.Reflection.AssemblyVersionAttribute("0.0.0.1")]
