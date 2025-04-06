@@ -1,9 +1,12 @@
-﻿#define DEBUG // Comment this line to disable debug logging
+﻿// #define DEBUG // Comment this line to disable debug logging
 using Dalamud.Game.Command;
 using Dalamud.Plugin;
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin.Services;
 using SimpleLogs.Windows;
+using SimpleLogs.Network;
+using SimpleLogs.Chat;
+using SimpleLogs.Utilities;
 using Dalamud.Interface;
 
 namespace SimpleLogs
@@ -20,14 +23,14 @@ namespace SimpleLogs
         public IGameNetwork GameNetwork { get; init; }
         public IChatGui ChatGui { get; init; }
         #if DEBUG
-        public Network.Testing Testing { get; init; }
+        public Testing Testing { get; init; }
         #endif
         public ConfigWindow ConfigWindow { get; init; }
         public MainWindow MainWindow { get; init; }
-        public Utilities.Timer timer;
-        public Utilities.DamageMeter DamageMeter { get; init; }
+        public Timer timer;
+        public DamageMeter DamageMeter { get; init; }
 
-        public Chat.Log ChatLogger { get; init; }
+        public Log ChatLogger { get; init; }
 
         private Network.Network NetworkLogger { get; init; }
 

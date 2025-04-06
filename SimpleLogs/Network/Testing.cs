@@ -1,3 +1,5 @@
+using SimpleLogs;
+
 namespace SimpleLogs.Network;
 #if DEBUG
 
