@@ -1,17 +1,19 @@
-{
-  "Author": "octakitten",
-  "Name": "Simple Logs",
-  "Punchline": "Logging, but simple.",
-  "Description": "Parses combat data to give a simple readout of dps, hps, damage taken, and other important information about an encounter.",
-  "InternalName": "simpleLogs",
-  "ApplicableVersion": "any",
-  "Tags": [
-    "simple",
-    "logs",
-    "octakitten"
-  ],
-  "DalamudApiLevel": 12,
-  "DownloadLinkInstall": "https://github.com/octakitten/SimpleLogs/blob/main/SimpleLogs/bin/x64/Debug/SimpleLogs.dll",
-  "DownloadLinkTesting": "https://github.com/octakitten/SimpleLogs/blob/main/SimpleLogs/bin/x64/Debug/SimpleLogs.dll",
-  "DownloadLinkUpdate": "https://github.com/octakitten/SimpleLogs/blob/main/SimpleLogs/bin/x64/Debug/SimpleLogs.dll"
-}
+[
+  {
+    "Author": "octakitten",
+    "Name": "Simple Logs",
+    "Punchline": "Logging, but simple.",
+    "Description": "Parses combat data to give a simple readout of dps, hps, damage taken, and other important information about an encounter.",
+    "InternalName": "simpleLogs",
+    "ApplicableVersion": "any",
+    "Tags": [
+      "simple",
+      "logs",
+      "octakitten"
+    ],
+    "DalamudApiLevel": 12,
+    "DownloadLinkInstall": "https://github.com/octakitten/SimpleLogs/blob/main/SimpleLogs/bin/x64/Debug/SimpleLogs.dll",
+    "DownloadLinkTesting": "https://github.com/octakitten/SimpleLogs/blob/main/SimpleLogs/bin/x64/Debug/SimpleLogs.dll",
+    "DownloadLinkUpdate": "https://github.com/octakitten/SimpleLogs/blob/main/SimpleLogs/bin/x64/Debug/SimpleLogs.dll"
+  }
+]
