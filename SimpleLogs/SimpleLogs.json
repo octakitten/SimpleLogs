@@ -1,5 +1,7 @@
 [
   {
+    "Version": "0.1.0",
+    "AssemblyVersion": "0.1.0",
     "Author": "octakitten",
     "Name": "Simple Logs",
     "Punchline": "Logging, but simple.",
