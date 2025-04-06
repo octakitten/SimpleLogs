@@ -2,6 +2,17 @@
 <Project Sdk="Dalamud.NET.Sdk/12.0.2">
 
   <PropertyGroup>
+    <Version>0.1.0</Version>
+    <AssemblyName>SimpleLogs</AssemblyName>
+    <RootNamespace>SimpleLogs</RootNamespace>
+    <OutputType>Library</OutputType>
+    <TargetFrameworkVersion>v9.0</TargetFrameworkVersion>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <DalamudPluginName>SimpleLogs</DalamudPluginName>
+    <DalamudPluginAuthor>octakitten</DalamudPluginAuthor>
+    <DalamudPluginDescription>A simple logging plugin.</DalamudPluginDescription>
+    <DalamudPluginAssemblyName>SimpleLogs</DalamudPluginAssemblyName>
+    <DalamudPluginVersion>0.1.0</DalamudPluginVersion>
     <Authors>octakitten</Authors>
     <Description>A simple logging plugin.</Description>
     <Copyright>octakitten</Copyright>
@@ -9,19 +20,5 @@
     <PackageProjectUrl>http://github.com/octakitten/SimpleLogs</PackageProjectUrl>
     <PackageLicenseExpression>AGPL-3.0-or-later</PackageLicenseExpression>
   </PropertyGroup>
-
-    <ItemGroup>
-        <Reference Include="Dalamud">
-            <Private>false</Private>
-            <HintPath>$(DalamudLibPath)\Dalamud.dll</HintPath>
-        </Reference>
-        <Reference Include="FFXIVClientStructs">
-            <Private>false</Private>
-            <HintPath>$(DalamudLibPath)\FFXIVClientStructs.dll</HintPath>
-        </Reference>
-        <Reference Include="InteropGenerator.Runtime">
-            <Private>false</Private>
-            <HintPath>$(DalamudLibPath)InteropGenerator.Runtime.dll</HintPath>
-        </Reference>
-    </ItemGroup>
+  
 </Project>
