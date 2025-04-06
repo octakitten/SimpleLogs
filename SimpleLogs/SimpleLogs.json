@@ -4,7 +4,7 @@
     "Name": "Simple Logs",
     "Punchline": "Logging, but simple.",
     "Description": "Parses combat data to give a simple readout of dps, hps, damage taken, and other important information about an encounter.",
-    "InternalName": "simpleLogs",
+    "InternalName": "SimpleLogs",
     "ApplicableVersion": "any",
     "Tags": [
       "simple",
