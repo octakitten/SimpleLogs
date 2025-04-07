@@ -125,6 +125,7 @@ public class DamageMeter
         this.plugin = plugin;
         this.damageLog = new List<DamageEntry>();
         this.partyMembers = new List<PartyMember>();
+        this.debuffLog = new List<DebuffEntry>();
     }
     
     public void AddDamageEntry(string name, int damage, int potency, double time)

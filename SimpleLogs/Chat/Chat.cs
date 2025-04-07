@@ -5,6 +5,7 @@ using System.Linq;
 using Dalamud.Plugin.Services;
 using System;
 using Lumina.Excel.Sheets;
+using ImPlotNET;
 
 namespace SimpleLogs.Chat
 {
@@ -511,7 +512,6 @@ namespace SimpleLogs.Chat
         {
             if (IsDebuffEvent(chatEvent))
             {
-                casting = false;
                 HandleDebuffEvent(chatEvent);
             }
             else if (casting)
@@ -529,8 +529,14 @@ namespace SimpleLogs.Chat
                 {
                     casting = true;
                     string[] dummy = chatEvent.message.Split(' ');
-                    castingPlayer = dummy[0] + " " + dummy[1] + " " + dummy[2];
-                
+                    if (IsServerName(dummy[2]))
+                    {
+                        castingPlayer = dummy[0] + " " + dummy[1] + " " + dummy[2];
+                    }
+                    else
+                    {
+                        castingPlayer = dummy[0] + " " + dummy[1];
+                    }
                 }
             }
             else if (IsDamageEvent(chatEvent))
@@ -564,7 +570,14 @@ namespace SimpleLogs.Chat
                 }
                 else
                 {
-                    HandleDamageEvent(newWords[0] + " " + newWords[1] + " " + newWords[2], newEvent);
+                    if (IsServerName(newWords[2]))
+                    {
+                        HandleDamageEvent(newWords[0] + " " + newWords[1] + " " + newWords[2], newEvent);
+                    }
+                    else
+                    {
+                        HandleDamageEvent(newWords[0] + " " + newWords[1], newEvent);
+                    }
                 }
             }
             else
@@ -600,7 +613,14 @@ namespace SimpleLogs.Chat
                         else
                         {
                             casting = true;
-                            castingPlayer = words[current] + " " + words[current + 1] + " " + words[current + 2];
+                            if (IsServerName(words[2]))
+                            {
+                                castingPlayer = words[current] + " " + words[current + 1] + " " + words[current + 2];
+                            }
+                            else
+                            {
+                                castingPlayer = words[current] + " " + words[current + 1];
+                            }
                         }
                     } 
                     else if (IsDamageEvent(chatLog[entry]))
@@ -634,7 +654,14 @@ namespace SimpleLogs.Chat
                         }
                         else
                         {
-                            HandleDamageEvent(newWords[current] + " " + newWords[current + 1] + " " + newWords[current + 2], newEvent);
+                            if (IsServerName(words[2]))
+                            {
+                                HandleDamageEvent(newWords[current] + " " + newWords[current + 1] + " " + newWords[current + 2], newEvent);
+                            }
+                            else
+                            {
+                                HandleDamageEvent(newWords[current] + " " + newWords[current + 1], newEvent);
+                            }
                         }
                     }
                     else
@@ -716,6 +743,39 @@ namespace SimpleLogs.Chat
                         }
                     }
                 }
+
+                if (!done)
+                {
+                    foreach (var dbf in Abilities.SAM.debuffs)
+                    if (cEvent.message.Contains(dbf))
+                    {
+                        plugin.DamageMeter.HandleDebuffEvent("you", dbf, cEvent.timestamp);
+                        done = true;
+                        break;
+                    }
+                }
+
+                if (!done)
+                {
+                    foreach (var dbf in Abilities.BRD.debuffs)
+                    if (cEvent.message.Contains(dbf))
+                    {
+                        plugin.DamageMeter.HandleDebuffEvent("you", dbf, cEvent.timestamp);
+                        done = true;
+                        break;
+                    }
+                }
+
+                if (!done)
+                {
+                    foreach (var dbf in Abilities.BLM.debuffs)
+                    if (cEvent.message.Contains(dbf))
+                    {
+                        plugin.DamageMeter.HandleDebuffEvent("you", dbf, cEvent.timestamp);
+                        done = true;
+                        break;
+                    }
+                }
                 
             }
             else
@@ -726,7 +786,14 @@ namespace SimpleLogs.Chat
                     if (cEvent.message.Contains(dbf))
                     {
                         string[] dummy = cEvent.message.Split(' ');
-                        plugin.DamageMeter.HandleDebuffEvent(dummy[0] + ' ' + dummy[1] + ' ' + dummy[2], dbf, cEvent.timestamp);
+                        if (IsServerName(dummy[2]))
+                        {
+                            plugin.DamageMeter.HandleDebuffEvent(dummy[0] + ' ' + dummy[1] + ' ' + dummy[2], dbf, cEvent.timestamp);
+                        }
+                        else
+                        {
+                            plugin.DamageMeter.HandleDebuffEvent(dummy[0] + ' ' + dummy[1], dbf, cEvent.timestamp);
+                        }
                         done = true;
                         break;
                     }
@@ -739,7 +806,14 @@ namespace SimpleLogs.Chat
                         if (cEvent.message.Contains(dbf))
                         {
                             string[] dummy = cEvent.message.Split(' ');
-                            plugin.DamageMeter.HandleDebuffEvent(dummy[0] + ' ' + dummy[1] + ' ' + dummy[2], dbf, cEvent.timestamp);
+                            if (IsServerName(dummy[2]))
+                            {
+                                plugin.DamageMeter.HandleDebuffEvent(dummy[0] + ' ' + dummy[1] + ' ' + dummy[2], dbf, cEvent.timestamp);
+                            }
+                            else
+                            {
+                                plugin.DamageMeter.HandleDebuffEvent(dummy[0] + ' ' + dummy[1], dbf, cEvent.timestamp);
+                            }
                             done = true;
                             break;
                         }
@@ -753,7 +827,14 @@ namespace SimpleLogs.Chat
                         if (cEvent.message.Contains(dbf))
                         {
                             string[] dummy = cEvent.message.Split(' ');
-                            plugin.DamageMeter.HandleDebuffEvent(dummy[0] + ' ' + dummy[1] + ' ' + dummy[2], dbf, cEvent.timestamp);
+                            if (IsServerName(dummy[2]))
+                            {
+                                plugin.DamageMeter.HandleDebuffEvent(dummy[0] + ' ' + dummy[1] + ' ' + dummy[2], dbf, cEvent.timestamp);
+                            }
+                            else
+                            {
+                                plugin.DamageMeter.HandleDebuffEvent(dummy[0] + ' ' + dummy[1], dbf, cEvent.timestamp);
+                            }
                             done = true;
                             break;
                         }
@@ -767,7 +848,77 @@ namespace SimpleLogs.Chat
                         if (cEvent.message.Contains(dbf))
                         {
                             string[] dummy = cEvent.message.Split(' ');
-                            plugin.DamageMeter.HandleDebuffEvent(dummy[0] + ' ' + dummy[1] + ' ' + dummy[2], dbf, cEvent.timestamp);
+                            if (IsServerName(dummy[2]))
+                            {
+                                plugin.DamageMeter.HandleDebuffEvent(dummy[0] + ' ' + dummy[1] + ' ' + dummy[2], dbf, cEvent.timestamp);
+                            }
+                            else
+                            {
+                                plugin.DamageMeter.HandleDebuffEvent(dummy[0] + ' ' + dummy[1], dbf, cEvent.timestamp);
+                            }
+                            done = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (!done)
+                {
+                    foreach (var dbf in Abilities.SAM.debuffs)
+                    {
+                        if (cEvent.message.Contains(dbf))
+                        {
+                            string[] dummy = cEvent.message.Split(' ');
+                            if (IsServerName(dummy[2]))
+                            {
+                                plugin.DamageMeter.HandleDebuffEvent(dummy[0] + ' ' + dummy[1] + ' ' + dummy[2], dbf, cEvent.timestamp);
+                            }
+                            else
+                            {
+                                plugin.DamageMeter.HandleDebuffEvent(dummy[0] + ' ' + dummy[1], dbf, cEvent.timestamp);
+                            }
+                            done = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (!done)
+                {
+                    foreach (var dbf in Abilities.BRD.debuffs)
+                    {
+                        if (cEvent.message.Contains(dbf))
+                        {
+                            string[] dummy = cEvent.message.Split(' ');
+                            if (IsServerName(dummy[2]))
+                            {
+                                plugin.DamageMeter.HandleDebuffEvent(dummy[0] + ' ' + dummy[1] + ' ' + dummy[2], dbf, cEvent.timestamp);
+                            }
+                            else
+                            {
+                                plugin.DamageMeter.HandleDebuffEvent(dummy[0] + ' ' + dummy[1], dbf, cEvent.timestamp);
+                            }
+                            done = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (!done)
+                {
+                    foreach (var dbf in Abilities.BLM.debuffs)
+                    {
+                        if (cEvent.message.Contains(dbf))
+                        {
+                            string[] dummy = cEvent.message.Split(' ');
+                            if (IsServerName(dummy[2]))
+                            {
+                                plugin.DamageMeter.HandleDebuffEvent(dummy[0] + ' ' + dummy[1] + ' ' + dummy[2], dbf, cEvent.timestamp);
+                            }
+                            else
+                            {
+                                plugin.DamageMeter.HandleDebuffEvent(dummy[0] + ' ' + dummy[1], dbf, cEvent.timestamp);
+                            }
                             done = true;
                             break;
                         }
@@ -808,6 +959,27 @@ namespace SimpleLogs.Chat
                         return abl;
                     }
                 }
+                foreach (var abl in Abilities.SAM.abilities)
+                {
+                    if (cEvent.message.Contains(abl))
+                    {
+                        return abl;
+                    }
+                }
+                foreach (var abl in Abilities.BRD.abilities)
+                {
+                    if (cEvent.message.Contains(abl))
+                    {
+                        return abl;
+                    }
+                }
+                foreach (var able in Abilities.BLM.abilities)
+                {
+                    if (cEvent.message.Contains(able))
+                    {
+                        return able;
+                    }
+                }
             }
             else
             {
@@ -840,7 +1012,27 @@ namespace SimpleLogs.Chat
                         return abl;
                     }
                 }
-                
+                foreach (var abl in Abilities.SAM.abilities)
+                {
+                    if (newMsg.Contains(abl))
+                    {
+                        return abl;
+                    }
+                }
+                foreach (var abl in Abilities.BRD.abilities)
+                {
+                    if (newMsg.Contains(abl))
+                    {
+                        return abl;
+                    }
+                }
+                foreach (var abl in Abilities.BLM.abilities)
+                {
+                    if (newMsg.Contains(abl))
+                    {
+                        return abl;
+                    }
+                }
             }
 
             return "failed!";
@@ -881,20 +1073,162 @@ namespace SimpleLogs.Chat
                     return ptn;
                 }
             }
+            for (int i = 0; i < Abilities.SAM.abilities.Length; i++)
+            {
+                if (ability == Abilities.SAM.abilities[i])
+                {
+                    ptn = Abilities.SAM.abilityPotencies[i];
+                    return ptn;
+                }
+            }
+            for (int i = 0; i < Abilities.BRD.abilities.Length; i++)
+            {
+                if (ability == Abilities.BRD.abilities[i])
+                {
+                    ptn = Abilities.BRD.abilityPotencies[i];
+                    return ptn;
+                }
+            }
+            for (int i = 0; i < Abilities.BLM.abilities.Length; i++)
+            {
+                if (ability == Abilities.BLM.abilities[i])
+                {
+                    ptn = Abilities.BLM.abilityPotencies[i];
+                    return ptn;
+                }
+            }
 
             return ptn;
         }
 
-        private string RemoveNameFromMsg(string msg)
+        private static string[] ServerNames =
         {
-            string[] words = msg.Split(' ');
-            string newMsg = "";
-            for (int i = 2; i < words.Length; i++)
+            "adamantoise",
+            "cactuar",
+            "faerie",
+            "gilgamesh",
+            "jenova",
+            "midgardsormr",
+            "sargatanas",
+            "siren",
+            "balmung",
+            "brynhildr",
+            "coeurl",
+            "diablos",
+            "goblin",
+            "malboro",
+            "mateus",
+            "zalera",
+            "cuchulainn",
+            "golem",
+            "halicarnassus",
+            "kraken",
+            "maduin",
+            "marilith",
+            "rafflesia",
+            "seraph",
+            "behemoth",
+            "excalibur",
+            "exodus",
+            "famfrit",
+            "hyperion",
+            "lamia",
+            "leviathan",
+            "ultros",
+            "cerberus",
+            "louisoix",
+            "moogle",
+            "omega",
+            "phantom",
+            "ragnarok",
+            "sagittarius",
+            "spriggan",
+            "alpha",
+            "lichl",
+            "odin",
+            "phoenix",
+            "raiden",
+            "shiva",
+            "twintania",
+            "zodiark",
+            "bismarck",
+            "ravana",
+            "sephirot",
+            "sophia",
+            "zurvan",
+            "aegis",
+            "atomos",
+            "carbuncle",
+            "garuda",
+            "gungnir",
+            "kujata",
+            "tonberry",
+            "typhon",
+            "alexander",
+            "bahamut",
+            "durandal",
+            "fenrir",
+            "ifrit",
+            "ridill",
+            "tiamat",
+            "ultima",
+            "anima",
+            "asura",
+            "chocobo",
+            "hades",
+            "ixion",
+            "masamune",
+            "pandaemonium",
+            "titan",
+            "belias",
+            "mandragora",
+            "ramuh",
+            "shinryu",
+            "unicorn",
+            "valefor",
+            "yojimbo",
+            "zeromus"
+        };
+
+        private bool IsServerName(string word)
+        {
+            foreach (var serverName in ServerNames)
             {
-                newMsg += words[i] + " ";
+                if (word.ToLower() == serverName)
+                {
+                    return true;
+                }
             }
 
-            return newMsg;
+            return false;
+        }
+
+        private string RemoveNameFromMsg(string msg)
+        {
+            if (msg.Contains(' '))
+            {
+                string[] words = msg.Split(' ');
+                string newMsg = "";
+                if (IsServerName(words[2]))
+                {
+                    for (int i = 3; i < words.Length - 1; i++)
+                    {
+                        newMsg += words[i] + " ";
+                    }
+                    newMsg += words.Last();
+                }
+                else 
+                {
+                    for (int i = 2; i < words.Length - 1; i++)
+                    {
+                        newMsg += words[i] + " ";
+                    }
+                    newMsg += words.Last();
+                }
+
+                return newMsg;
+            }
+            return "";
         }
         
         private bool IsCastEvent(ChatEvent cEvent)
@@ -935,28 +1269,42 @@ namespace SimpleLogs.Chat
 
         private bool IsYouEvent(ChatEvent cEvent)
         {
-            string[] words = cEvent.message.Split(' ');
-            if (words[0] == "you")
+            string[] words;
+            if (cEvent.message.Contains(' '))
             {
-                return true;
+                words = cEvent.message.Split(' ');
+                if (words[0] == "you")
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
         private bool IsAutoDmgEvent(ChatEvent cEvent)
         {
-            string[] words = cEvent.message.Split(' ');
-            if (words[0] == "you" && words[1] == "hit")
+            string[] words;
+            if (cEvent.message.Contains(' '))
             {
-                return true;
-            }
-            
-            if (words[3] == "hits")
-            {
-                return true;
+                words = cEvent.message.Split(' ');
+                if (words[0] == "you" && words[1] == "hit")
+                {
+                    return true;
+                }
+                
+                if (words[3] == "hits")
+                {
+                    return true;
+                }
+
+                if (words [2] == "hits")
+                {
+                    return true;
+                }
             }
 
             return false;
