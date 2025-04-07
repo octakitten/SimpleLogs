@@ -1,1 +1,1 @@
-dotnet build --configuration Release --nologo
+dotnet build --configuration Release

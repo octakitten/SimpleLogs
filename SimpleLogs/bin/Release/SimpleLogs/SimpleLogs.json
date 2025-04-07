@@ -15,6 +15,7 @@
   "LoadSync": false,
   "CanUnloadAsync": false,
   "LoadPriority": 0,
+  "IconUrl": "https://raw.githubusercontent.com/octakitten/SimpleLogs/blob/main/SimpleLogs/Media/icon.png",
   "Punchline": "Logging, but simple.",
   "AcceptsFeedback": true
 }
