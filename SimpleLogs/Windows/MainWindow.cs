@@ -59,12 +59,12 @@ public class MainWindow : Window, IDisposable
             ImGui.Separator();
         }
 
-        //ImGui.Text((plugin.ChatLogger.GetChatLog()[plugin.ChatLogger.GetChatLog().Count]).type);
-        //ImGui.Text((plugin.ChatLogger.GetChatLog()[plugin.ChatLogger.GetChatLog().Count]).sender);
-        //ImGui.Text((plugin.ChatLogger.GetChatLog()[plugin.ChatLogger.GetChatLog().Count]).message);
-        //ImGui.Text((plugin.ChatLogger.GetChatLog()[plugin.ChatLogger.GetChatLog().Count]).timestamp.ToString());
-        //ImGui.Separator();
-        /*
+        ImGui.Text((plugin.ChatLogger.GetChatLog()[plugin.ChatLogger.GetChatLog().Count]).type);
+        ImGui.Text((plugin.ChatLogger.GetChatLog()[plugin.ChatLogger.GetChatLog().Count]).sender);
+        ImGui.Text((plugin.ChatLogger.GetChatLog()[plugin.ChatLogger.GetChatLog().Count]).message);
+        ImGui.Text((plugin.ChatLogger.GetChatLog()[plugin.ChatLogger.GetChatLog().Count]).timestamp.ToString());
+        ImGui.Separator();
+        
         foreach (var entry in plugin.ChatLogger.GetChatLog())
         {
             ImGui.Text(entry.type);
@@ -72,7 +72,7 @@ public class MainWindow : Window, IDisposable
             ImGui.Text(entry.message);
             ImGui.Text(entry.timestamp.ToString());
         }
-        */
+        
         /*
         ImGui.Text($"Did we add a party member? {plugin.Configuration.addedToParty}");
         ImGui.Text($"Did we handle a damage event? {plugin.Configuration.handledDamageEvent}");

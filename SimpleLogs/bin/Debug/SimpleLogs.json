@@ -1,0 +1,21 @@
+{
+  "Author": "octakitten",
+  "Name": "Simple Logs",
+  "InternalName": "SimpleLogs",
+  "AssemblyVersion": "0.1.0.0",
+  "Description": "Parses combat data to give a simple readout of dps, hps, damage taken, and other important information about an encounter.",
+  "ApplicableVersion": "any",
+  "Tags": [
+    "simple",
+    "logs",
+    "octakitten"
+  ],
+  "DalamudApiLevel": 12,
+  "LoadRequiredState": 0,
+  "LoadSync": false,
+  "CanUnloadAsync": false,
+  "LoadPriority": 0,
+  "IconUrl": "https://raw.githubusercontent.com/octakitten/SimpleLogs/blob/main/SimpleLogs/Media/icon.png",
+  "Punchline": "Logging, but simple.",
+  "AcceptsFeedback": true
+}
