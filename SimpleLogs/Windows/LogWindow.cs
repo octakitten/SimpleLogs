@@ -25,10 +25,10 @@ public class LogWindow : Window, IDisposable
     {
         // Draw the log window content here
         ImGui.Text("Combat Log");
-        ImGui.Text((plugin.ChatLogger.GetChatLog()[plugin.ChatLogger.GetChatLog().Count]).type);
-        ImGui.Text((plugin.ChatLogger.GetChatLog()[plugin.ChatLogger.GetChatLog().Count]).sender);
-        ImGui.Text((plugin.ChatLogger.GetChatLog()[plugin.ChatLogger.GetChatLog().Count]).message);
-        ImGui.Text((plugin.ChatLogger.GetChatLog()[plugin.ChatLogger.GetChatLog().Count]).timestamp.ToString());
+        ImGui.Text((plugin.ChatLogger.GetChatLog()[plugin.ChatLogger.GetChatLog().Count - 1]).type);
+        ImGui.Text((plugin.ChatLogger.GetChatLog()[plugin.ChatLogger.GetChatLog().Count - 1]).sender);
+        ImGui.Text((plugin.ChatLogger.GetChatLog()[plugin.ChatLogger.GetChatLog().Count - 1]).message);
+        ImGui.Text((plugin.ChatLogger.GetChatLog()[plugin.ChatLogger.GetChatLog().Count - 1]).timestamp.ToString());
         ImGui.Separator();
         
         foreach (var entry in plugin.ChatLogger.GetChatLog())
