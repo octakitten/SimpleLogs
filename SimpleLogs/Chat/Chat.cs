@@ -502,8 +502,6 @@ namespace SimpleLogs.Chat
             newEvent.sender = sender.ToString().ToLower();
             newEvent.message = message.ToString().ToLower();
             newEvent.timestamp = timer.GetElapsedTime().TotalSeconds;
-            lastEvent = newEvent;
-            chatLog.Add(newEvent);
             AnalyzeChatMessage(newEvent);
         }
 
@@ -516,6 +514,9 @@ namespace SimpleLogs.Chat
             }
             else if (casting)
             {
+                chatEvent.sender = castingPlayer;
+                lastEvent = chatEvent;
+                chatLog.Add(chatEvent);
                 HandleDamageEvent(castingPlayer, chatEvent);
             }
             else if (IsCastEvent(chatEvent))
@@ -524,6 +525,9 @@ namespace SimpleLogs.Chat
                 {
                     casting = true;
                     castingPlayer = "you";
+                    chatEvent.sender = "you";
+                    lastEvent = chatEvent;
+                    chatLog.Add(chatEvent);
                 }
                 else
                 {
@@ -537,10 +541,14 @@ namespace SimpleLogs.Chat
                     {
                         castingPlayer = dummy[0] + " " + dummy[1];
                     }
+                    chatEvent.sender = castingPlayer;
+                    lastEvent = chatEvent;
+                    chatLog.Add(chatEvent);
                 }
             }
             else if (IsDamageEvent(chatEvent))
             {
+                casting = false;
                 ChatEvent newEvent = new ChatEvent();
                 newEvent.type = chatEvent.type;
                 newEvent.sender = chatEvent.sender;
@@ -548,10 +556,16 @@ namespace SimpleLogs.Chat
                 newEvent.message = SanitizeDmgMsg(chatEvent.message);
                 if (IsYouEvent(newEvent))
                 {
+                    newEvent.sender = "you";
+                    lastEvent = newEvent;
+                    chatLog.Add(newEvent);
                     HandleDamageEvent("you", newEvent);
                 }
                 else
                 {
+                    newEvent.sender = castingPlayer;
+                    lastEvent = newEvent;
+                    chatLog.Add(newEvent);
                     HandleDamageEvent(castingPlayer, newEvent);
                 }
             }
@@ -566,16 +580,24 @@ namespace SimpleLogs.Chat
                 string[] newWords = newEvent.message.Split(" ");
                 if (IsYouEvent(chatEvent))
                 {
+                    newEvent.sender = "you";
+                    lastEvent = newEvent;
+                    chatLog.Add(newEvent);
                     HandleDamageEvent("you", chatEvent);
                 }
                 else
                 {
                     if (IsServerName(newWords[2]))
                     {
+                        newEvent.sender = newWords[0] + " " + newWords[1] + " " + newWords[2];
+                        lastEvent = newEvent;
+                        chatLog.Add(newEvent);
                         HandleDamageEvent(newWords[0] + " " + newWords[1] + " " + newWords[2], newEvent);
                     }
                     else
                     {
+                        newEvent.sender = newWords[0] + " " + newWords[1];
+                        lastEvent = newEvent;
                         HandleDamageEvent(newWords[0] + " " + newWords[1], newEvent);
                     }
                 }
@@ -694,6 +716,9 @@ namespace SimpleLogs.Chat
         {
             if (IsYouEvent(cEvent))
             {
+                cEvent.sender = "you";
+                lastEvent = cEvent;
+                chatLog.Add(cEvent);
                 bool done = false;
                 foreach (var dbf in Abilities.AST.debuffs)
                 {
@@ -788,11 +813,17 @@ namespace SimpleLogs.Chat
                         string[] dummy = cEvent.message.Split(' ');
                         if (IsServerName(dummy[2]))
                         {
-                            plugin.DamageMeter.HandleDebuffEvent(dummy[0] + ' ' + dummy[1] + ' ' + dummy[2], dbf, cEvent.timestamp);
+                            cEvent.sender = dummy[0] + ' ' + dummy[1] + ' ' + dummy[2];
+                            lastEvent = cEvent;
+                            chatLog.Add(cEvent);
+                            plugin.DamageMeter.HandleDebuffEvent(cEvent.sender, dbf, cEvent.timestamp);
                         }
                         else
                         {
-                            plugin.DamageMeter.HandleDebuffEvent(dummy[0] + ' ' + dummy[1], dbf, cEvent.timestamp);
+                            cEvent.sender = dummy[0] + ' ' + dummy[1];
+                            lastEvent = cEvent;
+                            chatLog.Add(cEvent);
+                            plugin.DamageMeter.HandleDebuffEvent(cEvent.sender, dbf, cEvent.timestamp);
                         }
                         done = true;
                         break;
@@ -808,11 +839,17 @@ namespace SimpleLogs.Chat
                             string[] dummy = cEvent.message.Split(' ');
                             if (IsServerName(dummy[2]))
                             {
-                                plugin.DamageMeter.HandleDebuffEvent(dummy[0] + ' ' + dummy[1] + ' ' + dummy[2], dbf, cEvent.timestamp);
+                                cEvent.sender = dummy[0] + ' ' + dummy[1] + ' ' + dummy[2];
+                                lastEvent = cEvent;
+                                chatLog.Add(cEvent);
+                                plugin.DamageMeter.HandleDebuffEvent(cEvent.sender, dbf, cEvent.timestamp);
                             }
                             else
                             {
-                                plugin.DamageMeter.HandleDebuffEvent(dummy[0] + ' ' + dummy[1], dbf, cEvent.timestamp);
+                                cEvent.sender = dummy[0] + ' ' + dummy[1];
+                                lastEvent = cEvent;
+                                chatLog.Add(cEvent);
+                                plugin.DamageMeter.HandleDebuffEvent(cEvent.sender, dbf, cEvent.timestamp);
                             }
                             done = true;
                             break;
@@ -829,11 +866,17 @@ namespace SimpleLogs.Chat
                             string[] dummy = cEvent.message.Split(' ');
                             if (IsServerName(dummy[2]))
                             {
-                                plugin.DamageMeter.HandleDebuffEvent(dummy[0] + ' ' + dummy[1] + ' ' + dummy[2], dbf, cEvent.timestamp);
+                                cEvent.sender = dummy[0] + ' ' + dummy[1] + ' ' + dummy[2];
+                                lastEvent = cEvent;
+                                chatLog.Add(cEvent);
+                                plugin.DamageMeter.HandleDebuffEvent(cEvent.sender, dbf, cEvent.timestamp);
                             }
                             else
                             {
-                                plugin.DamageMeter.HandleDebuffEvent(dummy[0] + ' ' + dummy[1], dbf, cEvent.timestamp);
+                                cEvent.sender = dummy[0] + ' ' + dummy[1];
+                                lastEvent = cEvent;
+                                chatLog.Add(cEvent);
+                                plugin.DamageMeter.HandleDebuffEvent(cEvent.sender, dbf, cEvent.timestamp);
                             }
                             done = true;
                             break;
@@ -850,11 +893,17 @@ namespace SimpleLogs.Chat
                             string[] dummy = cEvent.message.Split(' ');
                             if (IsServerName(dummy[2]))
                             {
-                                plugin.DamageMeter.HandleDebuffEvent(dummy[0] + ' ' + dummy[1] + ' ' + dummy[2], dbf, cEvent.timestamp);
+                                cEvent.sender = dummy[0] + ' ' + dummy[1] + ' ' + dummy[2];
+                                lastEvent = cEvent;
+                                chatLog.Add(cEvent);
+                                plugin.DamageMeter.HandleDebuffEvent(cEvent.sender, dbf, cEvent.timestamp);
                             }
                             else
                             {
-                                plugin.DamageMeter.HandleDebuffEvent(dummy[0] + ' ' + dummy[1], dbf, cEvent.timestamp);
+                                cEvent.sender = dummy[0] + ' ' + dummy[1];
+                                lastEvent = cEvent;
+                                chatLog.Add(cEvent);
+                                plugin.DamageMeter.HandleDebuffEvent(cEvent.sender, dbf, cEvent.timestamp);
                             }
                             done = true;
                             break;
@@ -871,11 +920,17 @@ namespace SimpleLogs.Chat
                             string[] dummy = cEvent.message.Split(' ');
                             if (IsServerName(dummy[2]))
                             {
-                                plugin.DamageMeter.HandleDebuffEvent(dummy[0] + ' ' + dummy[1] + ' ' + dummy[2], dbf, cEvent.timestamp);
+                                cEvent.sender = dummy[0] + ' ' + dummy[1] + ' ' + dummy[2];
+                                lastEvent = cEvent;
+                                chatLog.Add(cEvent);
+                                plugin.DamageMeter.HandleDebuffEvent(cEvent.sender, dbf, cEvent.timestamp);
                             }
                             else
                             {
-                                plugin.DamageMeter.HandleDebuffEvent(dummy[0] + ' ' + dummy[1], dbf, cEvent.timestamp);
+                                cEvent.sender = dummy[0] + ' ' + dummy[1];
+                                lastEvent = cEvent;
+                                chatLog.Add(cEvent);
+                                plugin.DamageMeter.HandleDebuffEvent(cEvent.sender, dbf, cEvent.timestamp);
                             }
                             done = true;
                             break;
@@ -892,11 +947,17 @@ namespace SimpleLogs.Chat
                             string[] dummy = cEvent.message.Split(' ');
                             if (IsServerName(dummy[2]))
                             {
-                                plugin.DamageMeter.HandleDebuffEvent(dummy[0] + ' ' + dummy[1] + ' ' + dummy[2], dbf, cEvent.timestamp);
+                                cEvent.sender = dummy[0] + ' ' + dummy[1] + ' ' + dummy[2];
+                                lastEvent = cEvent;
+                                chatLog.Add(cEvent);
+                                plugin.DamageMeter.HandleDebuffEvent(cEvent.sender, dbf, cEvent.timestamp);
                             }
                             else
                             {
-                                plugin.DamageMeter.HandleDebuffEvent(dummy[0] + ' ' + dummy[1], dbf, cEvent.timestamp);
+                                cEvent.sender = dummy[0] + ' ' + dummy[1];
+                                lastEvent = cEvent;
+                                chatLog.Add(cEvent);
+                                plugin.DamageMeter.HandleDebuffEvent(cEvent.sender, dbf, cEvent.timestamp);
                             }
                             done = true;
                             break;
@@ -913,11 +974,17 @@ namespace SimpleLogs.Chat
                             string[] dummy = cEvent.message.Split(' ');
                             if (IsServerName(dummy[2]))
                             {
-                                plugin.DamageMeter.HandleDebuffEvent(dummy[0] + ' ' + dummy[1] + ' ' + dummy[2], dbf, cEvent.timestamp);
+                                cEvent.sender = dummy[0] + ' ' + dummy[1] + ' ' + dummy[2];
+                                lastEvent = cEvent;
+                                chatLog.Add(cEvent);
+                                plugin.DamageMeter.HandleDebuffEvent(cEvent.sender, dbf, cEvent.timestamp);
                             }
                             else
                             {
-                                plugin.DamageMeter.HandleDebuffEvent(dummy[0] + ' ' + dummy[1], dbf, cEvent.timestamp);
+                                cEvent.sender = dummy[0] + ' ' + dummy[1];
+                                lastEvent = cEvent;
+                                chatLog.Add(cEvent);
+                                plugin.DamageMeter.HandleDebuffEvent(cEvent.sender, dbf, cEvent.timestamp);
                             }
                             done = true;
                             break;
