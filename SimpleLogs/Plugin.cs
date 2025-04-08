@@ -27,6 +27,7 @@ namespace SimpleLogs
         #endif
         public ConfigWindow ConfigWindow { get; init; }
         public MainWindow MainWindow { get; init; }
+        public LogWindow LogWindow { get; init; }
         public Timer timer;
         public DamageMeter DamageMeter { get; init; }
 
@@ -51,9 +52,11 @@ namespace SimpleLogs
 
             ConfigWindow = new ConfigWindow(this);
             MainWindow = new MainWindow(this);
+            LogWindow = new LogWindow(this);
             
             WindowSystem.AddWindow(ConfigWindow);
             WindowSystem.AddWindow(MainWindow);
+            WindowSystem.AddWindow(LogWindow);
 
             this.timer = new Utilities.Timer();
             ChatLogger = new Chat.Log(this, timer);
@@ -104,6 +107,11 @@ namespace SimpleLogs
         public void DrawConfigUI()
         {
             ConfigWindow.IsOpen = true;
+        }
+
+        public void DrawLogUI()
+        {
+            LogWindow.IsOpen = true;
         }
     }
 }
