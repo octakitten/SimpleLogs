@@ -42,25 +42,36 @@ namespace SimpleLogs.Chat
             if (Environment.OSVersion.Platform == PlatformID.Unix)
             {
                 appDataPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/.config/SimpleLogs";
+                if (!System.IO.Directory.Exists(appDataPath))
+                {
+                    System.IO.Directory.CreateDirectory(appDataPath);
+                }
+                string filePath = $"{appDataPath}/DebugLog.txt";
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(filePath))
+                {
+                    foreach (var entry in log)
+                    {
+                        file.WriteLine($"{entry.timestamp}: {entry.message}");
+                    }
+                }
             }
             else
             {
-                appDataPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}/SimpleLogs";
-
-            }
-            if (!System.IO.Directory.Exists(appDataPath))
-            {
-                System.IO.Directory.CreateDirectory(appDataPath);
-            }
-            string filePath = $"{appDataPath}/DebugLog.txt";
-            using (System.IO.StreamWriter file = new System.IO.StreamWriter(filePath))
-            {
-                foreach (var entry in log)
+                appDataPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\SimpleLogs";
+                if (!System.IO.Directory.Exists(appDataPath))
                 {
-                    file.WriteLine($"{entry.timestamp}: {entry.message}");
+                    System.IO.Directory.CreateDirectory(appDataPath);
+                }
+                string filePath = $"{appDataPath}\\DebugLog.txt";
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(filePath))
+                {
+                    foreach (var entry in log)
+                    {
+                        file.WriteLine($"{entry.timestamp}: {entry.message}");
+                    }
                 }
             }
-            plugin.ChatGui.Print($"[Debug] Log exported to {filePath}");
+            plugin.ChatGui.Print($"[Debug] Log exported to {appDataPath}");
         }
     }
 

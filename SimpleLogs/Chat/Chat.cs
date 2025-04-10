@@ -631,82 +631,7 @@ namespace SimpleLogs.Chat
             plugin.DamageMeter.Reset();
             for (int entry = 0; entry < chatLog.Count; entry++)
             {
-                    string[] words = chatLog[entry].message.Split(' ');
-                    int current = 0;
-                    if (IsDebuffEvent(chatLog[entry]))
-                    {
-                        HandleDebuffEvent(chatLog[entry]);
-                    }
-                    if (casting)
-                    {
-                        HandleDamageEvent(castingPlayer, chatLog[entry]);
-                    }
-                    else if (IsCastEvent(chatLog[entry]))
-                    {
-                        if (IsYouEvent(chatLog[entry]))
-                        {
-                            casting = true;
-                            castingPlayer = "you";
-                            castingPotency = GetPotency(FindAbility(chatLog[entry]));
-                        }
-                        else
-                        {
-                            casting = true;
-                            if (IsServerName(words[2]))
-                            {
-                                castingPlayer = words[current] + " " + words[current + 1] + " " + words[current + 2];
-                            }
-                            else
-                            {
-                                castingPlayer = words[current] + " " + words[current + 1];
-                            }
-                        }
-                    } 
-                    else if (IsDamageEvent(chatLog[entry]))
-                    {
-                        ChatEvent newEvent = new ChatEvent();
-                        newEvent.type = chatLog[entry].type;
-                        newEvent.sender = chatLog[entry].sender;
-                        newEvent.timestamp = chatLog[entry].timestamp;
-                        newEvent.message = SanitizeDmgMsg(chatLog[entry].message);
-                        if (IsYouEvent(newEvent))
-                        {
-                            HandleDamageEvent("you", newEvent);
-                        }
-                        else
-                        {
-                            HandleDamageEvent(castingPlayer, newEvent);
-                        }
-                    }
-                    else if (IsAutoDmgEvent(chatLog[entry]))
-                    {
-                        casting = false;
-                        ChatEvent newEvent = new ChatEvent();
-                        newEvent.type = chatLog[entry].type;
-                        newEvent.sender = chatLog[entry].sender;
-                        newEvent.timestamp = chatLog[entry].timestamp;
-                        newEvent.message = SanitizeDmgMsg(chatLog[entry].message);
-                        string[] newWords = newEvent.message.Split(" ");
-                        if (IsYouEvent(chatLog[entry]))
-                        {
-                            HandleDamageEvent("you", chatLog[entry]);
-                        }
-                        else
-                        {
-                            if (IsServerName(words[2]))
-                            {
-                                HandleDamageEvent(newWords[current] + " " + newWords[current + 1] + " " + newWords[current + 2], newEvent);
-                            }
-                            else
-                            {
-                                HandleDamageEvent(newWords[current] + " " + newWords[current + 1], newEvent);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        casting = false;
-                    }
+                AnalyzeChatMessage(chatLog[entry]);
             }
         }
 
@@ -1338,14 +1263,15 @@ namespace SimpleLogs.Chat
         private bool IsDebuffEvent(ChatEvent cEvent)
         {
             this.plugin.DebugLogger.AddEntry($"Checking if {cEvent.type} is a debuff event");
-            if (cEvent.type == debuffType)
+            foreach (string dbf in Abilities.debuffs)
             {
-                return true;
+                if (cEvent.message.Contains(dbf))
+                {
+                    return true;
+                }
+
             }
-            else
-            {
                 return false;
-            }
         }
         
         private bool IsDamageEvent(ChatEvent cEvent)
