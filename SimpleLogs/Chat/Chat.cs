@@ -24,9 +24,22 @@ namespace SimpleLogs.Chat
             "bio",
             "bio ii",
             "biolysis",
+            "baneful impaction",
             "eukrasian dosis",
             "eukrasian dosis ii",
             "eukrasian dosis iii",
+            "eukrasian dyskrasia",
+            "higanbana",
+            "venomous bite",
+            "windbite",
+            "caustic bite",
+            "stormbite",
+            "thunder",
+            "thunder ii",
+            "thunder iii",
+            "thunder iv",
+            "high thunder",
+            "high thunder ii"
         };
 
         public struct AST
@@ -273,34 +286,34 @@ namespace SimpleLogs.Chat
 
 	    public static int[] abilityPotencies =
 	    {
-		200,
-		300,
-		270,
-		300,
-		90,
-		420,
-		200,
-		300,
-		640,
-		120,
-		420,
-		120,
-		340,
-		250,
-		100,
-		100,
-		100,
-		400,
-		800,
-		640,
-		100,
-		1000,
-		1000,
-		240,
-		940,
-		300,
-		640,
-		410
+            200,
+            300,
+            270,
+            300,
+            90,
+            420,
+            200,
+            300,
+            640,
+            120,
+            420,
+            120,
+            340,
+            250,
+            100,
+            100,
+            100,
+            400,
+            800,
+            640,
+            100,
+            1000,
+            1000,
+            240,
+            940,
+            300,
+            640,
+            410
 	    };
         }
 
@@ -308,79 +321,79 @@ namespace SimpleLogs.Chat
 	{
 	    public static string[] debuffs = 
 	    {
-		"venomous bite",
-		"windbite",
-		"caustic bite",
-		"stormbite"
+            "venomous bite",
+            "windbite",
+            "caustic bite",
+            "stormbite"
 	    };
 
 	    public static int[] debuffPotencies = 
 	    {
-		15,
-		20,
-		20,
-		25
+            15,
+            20,
+            20,
+            25
 	    };
 
 	    public static string[] abilities = 
 	    {
-		"heavy shot",
-		"straight shot",
-		"venomous bite",
-		"bloodletter",
-		"quick nock",
-		"wide volley",
-		"windbite",
-		"rain of death",
-		"pitch perfect",
-		"empyreal arrow",
-		"iron jaws",
-		"sidewinder",
-		"caustic bite",
-		"stormbite",
-		"refulgent arrow",
-		"shadowbite",
-		"burst shot",
-		"apex arrow",
-		"ladonsbite",
-		"blast arrow",
-		"heartbreak shot",
-		"resonant arrow",
-		"radiant encore",
+            "heavy shot",
+            "straight shot",
+            "venomous bite",
+            "bloodletter",
+            "quick nock",
+            "wide volley",
+            "windbite",
+            "rain of death",
+            "pitch perfect",
+            "empyreal arrow",
+            "iron jaws",
+            "sidewinder",
+            "caustic bite",
+            "stormbite",
+            "refulgent arrow",
+            "shadowbite",
+            "burst shot",
+            "apex arrow",
+            "ladonsbite",
+            "blast arrow",
+            "heartbreak shot",
+            "resonant arrow",
+            "radiant encore",
 	    };
 
 	    public static int[] abilityPotencies = 
 	    {
-		160,
-		200,
-		100,
-		130,
-		110,
-		140,
-		60,
-		100,
-		360,
-		260,
-		100,
-		400,
-		150,
-		100,
-		280,
-		180,
-		220,
-		600,
-		140,
-		600,
-		180,
-		600,
-		900
+            160,
+            200,
+            100,
+            130,
+            110,
+            140,
+            60,
+            100,
+            360,
+            260,
+            100,
+            400,
+            150,
+            100,
+            280,
+            180,
+            220,
+            600,
+            140,
+            600,
+            180,
+            600,
+            900
 	    };
 	}
 
 	public struct BLM
 	{
 	    public static string[] debuffs = 
-         	{
+        {
 		    "thunder",
 		    "thunder ii",
 		    "thunder iii",
@@ -391,68 +404,68 @@ namespace SimpleLogs.Chat
 
 	    public static int[] debuffPotencies = 
 	    {
-		45,
-		30,
-		50,
-		35,
-		60,
-		40
+            45,
+            30,
+            50,
+            35,
+            60,
+            40
 	    };
 
 	    public static string[] abilities = 
 	    {
-		"blizzard",
-		"fire",
-		"thunder",
-		"blizzard ii",
-		"scathe",
-		"fire ii",
-		"thunder ii",
-		"fire iii",
-		"blizzard iii",
-		"freeze",
-		"thunder iii",
-		"flare",
-		"blizzard iv",
-		"fire iv",
-		"thunder iv",
-		"foul",
-		"despair",
-		"xenoglossy",
-		"high fire ii",
-		"high blizzard ii",
-		"paradox",
-		"high thunder",
-		"high thunder ii",
-		"flare star"
+            "blizzard",
+            "fire",
+            "thunder",
+            "blizzard ii",
+            "scathe",
+            "fire ii",
+            "thunder ii",
+            "fire iii",
+            "blizzard iii",
+            "freeze",
+            "thunder iii",
+            "flare",
+            "blizzard iv",
+            "fire iv",
+            "thunder iv",
+            "foul",
+            "despair",
+            "xenoglossy",
+            "high fire ii",
+            "high blizzard ii",
+            "paradox",
+            "high thunder",
+            "high thunder ii",
+            "flare star"
 	    };
 
 	    public static int[] abilityPotencies = 
 	    {
-		180,
-		180,
-		100,
-		80,
-		100,
-		80,
-		60,
-		290,
-		290,
-		120,
-		120,
-		240,
-		300,
-		300,
-		80,
-		600,
-		350,
-		890,
-		100,
-		100,
-		540,
-		150,
-		100,
-		500
+            180,
+            180,
+            100,
+            80,
+            100,
+            80,
+            60,
+            290,
+            290,
+            120,
+            120,
+            240,
+            300,
+            300,
+            80,
+            600,
+            350,
+            890,
+            100,
+            100,
+            540,
+            150,
+            100,
+            500
 	    };
 
 	}
@@ -496,6 +509,7 @@ namespace SimpleLogs.Chat
 
         private void OnChatMessage(XivChatType type, int timestamp, ref SeString sender, ref SeString message, ref bool isHandled)
         {
+            this.plugin.DebugLogger.AddEntry($"Chat message received: {type} {sender} {message}");
             // Record the chat message to the chat log
             ChatEvent newEvent = new ChatEvent();
             newEvent.type = type.ToString().ToLower();
@@ -508,8 +522,10 @@ namespace SimpleLogs.Chat
 
         public void AnalyzeChatMessage(ChatEvent chatEvent)
         {
+            this.plugin.DebugLogger.AddEntry($"Analyzing chat message: {chatEvent.type} {chatEvent.sender} {chatEvent.message}");
             if (IsDebuffEvent(chatEvent))
             {
+                chatEvent.sender = castingPlayer;
                 HandleDebuffEvent(chatEvent);
             }
             else if (casting)
@@ -611,6 +627,7 @@ namespace SimpleLogs.Chat
 
         public void AnalyzeChatLog()
         {
+            this.plugin.DebugLogger.AddEntry("Analyzing chat log");
             plugin.DamageMeter.Reset();
             for (int entry = 0; entry < chatLog.Count; entry++)
             {
@@ -695,6 +712,7 @@ namespace SimpleLogs.Chat
 
         private void HandleDamageEvent(string player, ChatEvent cEvent)
         {
+            this.plugin.DebugLogger.AddEntry($"Handling damage event: {player} {cEvent.type} {cEvent.sender} {cEvent.message}");
             //plugin.Configuration.handledDamageEvent = true;
             string[] words = cEvent.message.Split(' ');
             foreach (var word in words)
@@ -714,6 +732,7 @@ namespace SimpleLogs.Chat
 
         private void HandleDebuffEvent(ChatEvent cEvent)
         {
+            this.plugin.DebugLogger.AddEntry($"Handling debuff event: {cEvent.type} {cEvent.sender} {cEvent.message}");
             if (IsYouEvent(cEvent))
             {
                 cEvent.sender = "you";
@@ -996,6 +1015,7 @@ namespace SimpleLogs.Chat
 
         private string FindAbility(ChatEvent cEvent)
         {
+            this.plugin.DebugLogger.AddEntry($"Finding ability: {cEvent.type} {cEvent.sender} {cEvent.message}");
             if (IsYouEvent(cEvent))
             {
                 foreach (var abl in Abilities.AST.abilities)
@@ -1107,6 +1127,7 @@ namespace SimpleLogs.Chat
 
         private int GetPotency(string ability)
         {
+            this.plugin.DebugLogger.AddEntry($"Getting potency for ability: {ability}");
             int ptn = -1;
             for (int i = 0; i < Abilities.AST.abilities.Length; i++)
             {
@@ -1259,6 +1280,8 @@ namespace SimpleLogs.Chat
 
         private bool IsServerName(string word)
         {
+            word = word.ToLower();
+            this.plugin.DebugLogger.AddEntry($"Checking if {word} is a server name");
             foreach (var serverName in ServerNames)
             {
                 if (word.ToLower() == serverName)
@@ -1272,6 +1295,7 @@ namespace SimpleLogs.Chat
 
         private string RemoveNameFromMsg(string msg)
         {
+            this.plugin.DebugLogger.AddEntry($"Removing name from message: {msg}");
             if (msg.Contains(' '))
             {
                 string[] words = msg.Split(' ');
@@ -1300,6 +1324,7 @@ namespace SimpleLogs.Chat
         
         private bool IsCastEvent(ChatEvent cEvent)
         {
+            this.plugin.DebugLogger.AddEntry($"Checking if {cEvent.type} is a cast event");
             if (cEvent.type == castingType)
             {
                 return true;
@@ -1312,6 +1337,7 @@ namespace SimpleLogs.Chat
         
         private bool IsDebuffEvent(ChatEvent cEvent)
         {
+            this.plugin.DebugLogger.AddEntry($"Checking if {cEvent.type} is a debuff event");
             if (cEvent.type == debuffType)
             {
                 return true;
@@ -1324,6 +1350,7 @@ namespace SimpleLogs.Chat
         
         private bool IsDamageEvent(ChatEvent cEvent)
         {
+            this.plugin.DebugLogger.AddEntry($"Checking if {cEvent.type} is a damage event");
             if (cEvent.type == damageType1 || cEvent.type == damageType2)
             {
                 return true;
@@ -1336,6 +1363,11 @@ namespace SimpleLogs.Chat
 
         private bool IsYouEvent(ChatEvent cEvent)
         {
+            this.plugin.DebugLogger.AddEntry($"Checking if {cEvent.sender} is you");
+            if (cEvent.sender == "you")
+            {
+                return true;
+            }
             string[] words;
             if (cEvent.message.Contains(' '))
             {
@@ -1354,6 +1386,7 @@ namespace SimpleLogs.Chat
 
         private bool IsAutoDmgEvent(ChatEvent cEvent)
         {
+            this.plugin.DebugLogger.AddEntry($"Checking if {cEvent.type} is an auto damage event");
             string[] words;
             if (cEvent.message.Contains(' '))
             {
@@ -1379,6 +1412,7 @@ namespace SimpleLogs.Chat
 
         private string SanitizeDmgMsg(string msg)
         {
+            this.plugin.DebugLogger.AddEntry($"Sanitizing damage message of crit and dhit messages: {msg}");
             msg = msg.ToLower();
             string[] wordsCheck = msg.Split(" ");
             string[] removes = {"critical", "critical!", "direct", "hit!"};

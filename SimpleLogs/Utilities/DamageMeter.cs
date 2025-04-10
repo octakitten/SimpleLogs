@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Formats.Asn1;
 using System.Linq;
 
 namespace SimpleLogs.Utilities;
@@ -98,6 +100,12 @@ public class DamageMeter
         public List<DebuffEntry> debuffs;
         public double debuffDuration;
         public double debuff2Duration;
+
+        public PartyMember()
+        {
+            debuffs = new List<DebuffEntry>();
+            name = "";
+        }
     }
     
     public class DamageEntry
@@ -106,6 +114,11 @@ public class DamageMeter
         public int damage;
         public int potency;
         public double timestamp;
+        public DamageEntry()
+        {
+            name = "";
+
+        }
     }
     
     public class DebuffEntry
@@ -113,6 +126,12 @@ public class DamageMeter
         public string name;
         public string debuff;
         public double timestamp;
+
+        public DebuffEntry()
+        {
+            name = "";
+            debuff = "";
+        }
     }
     
     private List<DamageEntry> damageLog;
@@ -157,6 +176,14 @@ public class DamageMeter
         newDebuff.debuff = debuff;
         newDebuff.timestamp = time;
         debuffLog.Add(newDebuff);
+        for (int i = 0; i < partyMembers.Count; i++)
+        {
+            if (partyMembers[i].name == name)
+            {
+                partyMembers[i].debuffs.Add(newDebuff);
+                break;
+            }
+        }
     }
     
     public void AddPartyMember(string name)
@@ -252,6 +279,8 @@ public class DamageMeter
                         timestamp2 = debuff.timestamp;
                     }
                 }
+                active = false;
+                active2 = false;
             }
 
             double endTimestamp = damageLog.Last().timestamp;
@@ -278,6 +307,15 @@ public class DamageMeter
                 member.debuff2Duration = duration2;
             }
             
+            for (int i = 0; i < partyMembers.Count; i++)
+            {
+                if (partyMembers[i].name == member.name)
+                {
+                    partyMembers[i].debuffDuration = member.debuffDuration;
+                    partyMembers[i].debuff2Duration = member.debuff2Duration;
+                    break;
+                }
+            }
         }
         
         
@@ -313,6 +351,15 @@ public class DamageMeter
                 double dotPot2 = debuffPotencies[debuffs.IndexOf(dot2)] * member.debuff2Duration / 3;
                 int dotDmg2 = (int)Math.Round(dotPot2 * member.damage / member.potency);
                 member.damage += dotDmg + dotDmg2;
+            }
+            for (int i = 0; i < partyMembers.Count; i++)
+            {
+                if (partyMembers[i].name == member.name)
+                {
+                    partyMembers[i].damage = member.damage;
+                    partyMembers[i].dps = partyMembers[i].damage / GetFightDuration();
+                    break;
+                }
             }
         }
     }

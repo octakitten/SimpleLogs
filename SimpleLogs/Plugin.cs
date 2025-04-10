@@ -32,6 +32,7 @@ namespace SimpleLogs
         public DamageMeter DamageMeter { get; init; }
 
         public Log ChatLogger { get; init; }
+        public DebugLog DebugLogger { get; init; }
 
         private Network.Network NetworkLogger { get; init; }
 
@@ -62,6 +63,7 @@ namespace SimpleLogs
             ChatLogger = new Chat.Log(this, timer);
             NetworkLogger = new Network.Network(this, timer);
             DamageMeter = new Utilities.DamageMeter(this);
+            DebugLogger = new Chat.DebugLog(this);
             #if DEBUG
             Testing = new Network.Testing(this, timer);
             #endif

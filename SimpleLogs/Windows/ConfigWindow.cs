@@ -35,5 +35,10 @@ public class ConfigWindow : Window, IDisposable
             // can save immediately on change, if you don't want to provide a "Save and Close" button
             this.Configuration.Save();
         }
+
+        if (ImGui.Button("Export Debug Log"))
+        {
+            this.plugin.DebugLogger.ExportLog();
+        }
     }
 }

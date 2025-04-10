@@ -56,6 +56,7 @@ public class MainWindow : Window, IDisposable
             ImGui.Text(member.name);
             ImGui.Text(member.damage.ToString());
             ImGui.Text(member.dps.ToString());
+            ImGui.Text(member.debuffDuration.ToString());
             ImGui.Separator();
         }
 
