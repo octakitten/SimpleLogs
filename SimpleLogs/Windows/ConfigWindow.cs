@@ -36,9 +36,11 @@ public class ConfigWindow : Window, IDisposable
             this.Configuration.Save();
         }
 
+        #if DEBUG
         if (ImGui.Button("Export Debug Log"))
         {
             this.plugin.DebugLogger.ExportLog();
         }
+        #endif
     }
 }

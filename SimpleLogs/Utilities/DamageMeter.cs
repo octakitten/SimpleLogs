@@ -149,6 +149,9 @@ public class DamageMeter
     
     public void AddDamageEntry(string name, int damage, int potency, double time)
     {
+        #if DEBUG
+        this.plugin.DebugLogger.AddEntry($"Adding damage entry for {name} with {damage} damage and {potency} potency at {time}");
+        #endif
         DamageEntry newEntry = new DamageEntry();
         newEntry.name = name;
         newEntry.damage = damage;
@@ -171,6 +174,9 @@ public class DamageMeter
 
     public void AddDebuffEntry(string name, string debuff, double time)
     {
+        #if DEBUG
+        this.plugin.DebugLogger.AddEntry($"Adding debuff entry for {name} with {debuff} at {time}");
+        #endif
         DebuffEntry newDebuff = new DebuffEntry();
         newDebuff.name = name;
         newDebuff.debuff = debuff;
@@ -192,6 +198,9 @@ public class DamageMeter
         //{
         //    plugin.Configuration.addedToParty += 1;
         //}
+        #if DEBUG
+        this.plugin.DebugLogger.AddEntry($"Adding party member {name}");
+        #endif
         PartyMember newPlayer = new PartyMember();
         newPlayer.name = name;
         newPlayer.damage = 0;
@@ -200,6 +209,9 @@ public class DamageMeter
     
     public void UpdatePartyMemberDamage(string name, int damage, int potency)
     {
+        #if DEBUG
+        this.plugin.DebugLogger.AddEntry($"Updating party member {name} with {damage} damage and {potency} potency");
+        #endif
         for (int i = 0; i < partyMembers.Count; i++)
         {
             if (partyMembers[i].name == name)
@@ -224,6 +236,9 @@ public class DamageMeter
         // then add that damage to the total damage of the player
         // and update the dps of the player
 
+        #if DEBUG
+        this.plugin.DebugLogger.AddEntry($"Calculating DoT duration");
+        #endif
         foreach (var member in partyMembers)
         {
             bool active = false;
@@ -311,6 +326,9 @@ public class DamageMeter
             {
                 if (partyMembers[i].name == member.name)
                 {
+                    #if DEBUG
+                    this.plugin.DebugLogger.AddEntry($"Updating party member {member.name} with {member.debuffDuration} debuff duration and {member.debuff2Duration} debuff2 duration");
+                    #endif
                     partyMembers[i].debuffDuration = member.debuffDuration;
                     partyMembers[i].debuff2Duration = member.debuff2Duration;
                     break;
@@ -323,6 +341,9 @@ public class DamageMeter
 
     private void CalcDotDmg()
     {
+        #if DEBUG
+        this.plugin.DebugLogger.AddEntry($"Calculating DoT damage");
+        #endif
         foreach (var member in partyMembers)
         {
             string dot = "";
@@ -356,6 +377,9 @@ public class DamageMeter
             {
                 if (partyMembers[i].name == member.name)
                 {
+                    #if DEBUG
+                    this.plugin.DebugLogger.AddEntry($"Updating party member {member.name} with {member.damage} damage");
+                    #endif
                     partyMembers[i].damage = member.damage;
                     partyMembers[i].dps = partyMembers[i].damage / GetFightDuration();
                     break;
@@ -366,6 +390,10 @@ public class DamageMeter
 
     private bool IsSecondDOT(DebuffEntry debuff)
     {
+        #if DEBUG
+        this.plugin.DebugLogger.AddEntry($"Checking if {debuff.debuff} is a second DoT");
+        #endif
+
         if (debuff.debuff == "windbite")
         {
             return true;
@@ -383,6 +411,9 @@ public class DamageMeter
 
     private double GetFightDuration()
     {
+        #if DEBUG
+        this.plugin.DebugLogger.AddEntry($"Getting fight duration");
+        #endif
         double duration = 0;
         int count = damageLog.Count;
         if (count > 0)
@@ -417,6 +448,9 @@ public class DamageMeter
 
     public void HandleEvent(string name, int damage, int potency, double timestamp)
     {
+        #if DEBUG
+        this.plugin.DebugLogger.AddEntry($"Handling event for {name} with {damage} damage and {potency} potency at {timestamp}");
+        #endif
         if (IsPartyMember(name))
         {
             UpdatePartyMemberDamage(name, damage, potency);
@@ -429,6 +463,8 @@ public class DamageMeter
             AddPartyMember(name);
             UpdatePartyMemberDamage(name, damage, potency);
             AddDamageEntry(name, damage, potency, timestamp);
+            CalcDOTDuration();
+            CalcDotDmg();
         }
     }
 

@@ -509,7 +509,9 @@ namespace SimpleLogs.Chat
 
         private void OnChatMessage(XivChatType type, int timestamp, ref SeString sender, ref SeString message, ref bool isHandled)
         {
+            #if DEBUG
             this.plugin.DebugLogger.AddEntry($"Chat message received: {type} {sender} {message}");
+            #endif
             // Record the chat message to the chat log
             ChatEvent newEvent = new ChatEvent();
             newEvent.type = type.ToString().ToLower();
@@ -522,7 +524,9 @@ namespace SimpleLogs.Chat
 
         public void AnalyzeChatMessage(ChatEvent chatEvent)
         {
+            #if DEBUG
             this.plugin.DebugLogger.AddEntry($"Analyzing chat message: {chatEvent.type} {chatEvent.sender} {chatEvent.message}");
+            #endif
             if (IsDebuffEvent(chatEvent))
             {
                 chatEvent.sender = castingPlayer;
@@ -627,7 +631,9 @@ namespace SimpleLogs.Chat
 
         public void AnalyzeChatLog()
         {
+            #if DEBUG
             this.plugin.DebugLogger.AddEntry("Analyzing chat log");
+            #endif
             plugin.DamageMeter.Reset();
             for (int entry = 0; entry < chatLog.Count; entry++)
             {
@@ -637,7 +643,9 @@ namespace SimpleLogs.Chat
 
         private void HandleDamageEvent(string player, ChatEvent cEvent)
         {
+            #if DEBUG
             this.plugin.DebugLogger.AddEntry($"Handling damage event: {player} {cEvent.type} {cEvent.sender} {cEvent.message}");
+            #endif
             //plugin.Configuration.handledDamageEvent = true;
             string[] words = cEvent.message.Split(' ');
             foreach (var word in words)
@@ -657,7 +665,9 @@ namespace SimpleLogs.Chat
 
         private void HandleDebuffEvent(ChatEvent cEvent)
         {
+            #if DEBUG
             this.plugin.DebugLogger.AddEntry($"Handling debuff event: {cEvent.type} {cEvent.sender} {cEvent.message}");
+            #endif
             if (IsYouEvent(cEvent))
             {
                 cEvent.sender = "you";
@@ -940,7 +950,9 @@ namespace SimpleLogs.Chat
 
         private string FindAbility(ChatEvent cEvent)
         {
+            #if DEBUG
             this.plugin.DebugLogger.AddEntry($"Finding ability: {cEvent.type} {cEvent.sender} {cEvent.message}");
+            #endif
             if (IsYouEvent(cEvent))
             {
                 foreach (var abl in Abilities.AST.abilities)
@@ -1052,7 +1064,9 @@ namespace SimpleLogs.Chat
 
         private int GetPotency(string ability)
         {
+            #if DEBUG
             this.plugin.DebugLogger.AddEntry($"Getting potency for ability: {ability}");
+            #endif
             int ptn = -1;
             for (int i = 0; i < Abilities.AST.abilities.Length; i++)
             {
@@ -1206,7 +1220,9 @@ namespace SimpleLogs.Chat
         private bool IsServerName(string word)
         {
             word = word.ToLower();
+            #if DEBUG
             this.plugin.DebugLogger.AddEntry($"Checking if {word} is a server name");
+            #endif
             foreach (var serverName in ServerNames)
             {
                 if (word.ToLower() == serverName)
@@ -1220,7 +1236,9 @@ namespace SimpleLogs.Chat
 
         private string RemoveNameFromMsg(string msg)
         {
+            #if DEBUG
             this.plugin.DebugLogger.AddEntry($"Removing name from message: {msg}");
+            #endif
             if (msg.Contains(' '))
             {
                 string[] words = msg.Split(' ');
@@ -1249,7 +1267,9 @@ namespace SimpleLogs.Chat
         
         private bool IsCastEvent(ChatEvent cEvent)
         {
+            #if DEBUG
             this.plugin.DebugLogger.AddEntry($"Checking if {cEvent.type} is a cast event");
+            #endif
             if (cEvent.type == castingType)
             {
                 return true;
@@ -1262,7 +1282,9 @@ namespace SimpleLogs.Chat
         
         private bool IsDebuffEvent(ChatEvent cEvent)
         {
+            #if DEBUG
             this.plugin.DebugLogger.AddEntry($"Checking if {cEvent.type} is a debuff event");
+            #endif
             foreach (string dbf in Abilities.debuffs)
             {
                 if (cEvent.message.Contains(dbf))
@@ -1276,7 +1298,9 @@ namespace SimpleLogs.Chat
         
         private bool IsDamageEvent(ChatEvent cEvent)
         {
+            #if DEBUG
             this.plugin.DebugLogger.AddEntry($"Checking if {cEvent.type} is a damage event");
+            #endif
             if (cEvent.type == damageType1 || cEvent.type == damageType2)
             {
                 return true;
@@ -1289,7 +1313,9 @@ namespace SimpleLogs.Chat
 
         private bool IsYouEvent(ChatEvent cEvent)
         {
+            #if DEBUG
             this.plugin.DebugLogger.AddEntry($"Checking if {cEvent.sender} is you");
+            #endif
             if (cEvent.sender == "you")
             {
                 return true;
@@ -1312,7 +1338,9 @@ namespace SimpleLogs.Chat
 
         private bool IsAutoDmgEvent(ChatEvent cEvent)
         {
+            #if DEBUG
             this.plugin.DebugLogger.AddEntry($"Checking if {cEvent.type} is an auto damage event");
+            #endif
             string[] words;
             if (cEvent.message.Contains(' '))
             {
@@ -1338,7 +1366,9 @@ namespace SimpleLogs.Chat
 
         private string SanitizeDmgMsg(string msg)
         {
+            #if DEBUG
             this.plugin.DebugLogger.AddEntry($"Sanitizing damage message of crit and dhit messages: {msg}");
+            #endif
             msg = msg.ToLower();
             string[] wordsCheck = msg.Split(" ");
             string[] removes = {"critical", "critical!", "direct", "hit!"};
