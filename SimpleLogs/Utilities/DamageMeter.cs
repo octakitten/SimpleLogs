@@ -441,8 +441,17 @@ public class DamageMeter
     
     public void Reset()
     {
+#if DEBUG
+        this.plugin.DebugLogger.AddEntry("Clearing damage log.");
+#endif
         damageLog.Clear();
+#if DEBUG
+        this.plugin.DebugLogger.AddEntry("Clearing party member list.");
+#endif
         partyMembers.Clear();
+#if DEBUG
+        this.plugin.DebugLogger.AddEntry("Clearing debuff log.");
+#endif
         debuffLog.Clear();
     }
 

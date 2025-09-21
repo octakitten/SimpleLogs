@@ -38,6 +38,9 @@ public class MainWindow : Window, IDisposable
         
         if (ImGui.Button("Update"))
         {
+#if DEBUG
+            this.plugin.DebugLogger.AddEntry($"Pressed the Update button.");
+#endif
             plugin.ChatLogger.AnalyzeChatLog();
         }
 
@@ -56,26 +59,25 @@ public class MainWindow : Window, IDisposable
         //ImPlot.PlotBegin("Simple DPS Meter!");
         //ImPlot.PlotBars("Simple DPS!", members, 8);
         //ImPlot.EndPlot();
-        ImPlot.BeginPlot("DPS!");
-        foreach (var member in plugin.DamageMeter.GetPartyMembers())
-        {
-            var testname = new char[4];
-            testname[0] = '1';
-            testname[1] = '2';
-            testname[2] = '3';
-            testname[3] = '4';
-            var memdps = Convert.ToSingle(member.dps);
-            float* memdpsptr = &memdps;
-            var memname = member.name;
-            //byte* memnameptr = &(byte)memname;
-            ImPlot.PlotBars(memname, memdpsptr, 1);
-            //ImGui.Text(member.name);
-            //ImGui.Text(member.damage.ToString());
-            //ImGui.Text(member.dps.ToString());
-            //ImGui.Text(member.debuffDuration.ToString());
-        }
-        ImPlot.EndPlot();
-        ImGui.Separator();
+        if (plugin.DamageMeter.GetPartyMembers().Count > 0) {
+            ImPlot.BeginPlot("DPS!");
+            int count = 0;
+            foreach (var member in plugin.DamageMeter.GetPartyMembers())
+            {
+                var memdps = Convert.ToSingle(member.dps);
+                float* memdpsptr = &memdps;
+                var memname = member.name;
+                //byte* memnameptr = &(byte)memname;
+                ImPlot.PlotBars(memname, memdpsptr, count);
+                count++;
+                //ImGui.Text(member.name);
+                //ImGui.Text(member.damage.ToString());
+                //ImGui.Text(member.dps.ToString());
+                //ImGui.Text(member.debuffDuration.ToString());
+            }
+            ImPlot.EndPlot();
+            ImGui.Separator();
+        };
 
         
         /*

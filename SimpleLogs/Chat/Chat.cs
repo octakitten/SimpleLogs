@@ -1345,6 +1345,10 @@ namespace SimpleLogs.Chat
             if (cEvent.message.Contains(' '))
             {
                 words = cEvent.message.Split(' ');
+                if (words.Length < 4) {
+                    return false;
+                }
+
                 if (words[0] == "you" && words[1] == "hit")
                 {
                     return true;
