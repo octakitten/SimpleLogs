@@ -5,7 +5,7 @@ using System.Linq;
 using Dalamud.Plugin.Services;
 using System;
 using Lumina.Excel.Sheets;
-using ImPlotNET;
+using Hexa.NET.ImGui;
 using System.Reflection.Metadata.Ecma335;
 
 namespace SimpleLogs.Chat

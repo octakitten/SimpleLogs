@@ -1,4 +1,4 @@
-using Dalamud.Game;
+/*using Dalamud.Game;
 using Dalamud.Game.Network;
 using Dalamud.Plugin;
 using System;
@@ -17,6 +17,7 @@ namespace SimpleLogs.Network
      * parse the information in them. Once we have the packet's information, we'll use it
      * to calculate the damage of the combat event and send it as an event to the DamageMeter.
      */
+/*
     public class Network
     {
         private Plugin plugin;
@@ -38,6 +39,7 @@ namespace SimpleLogs.Network
          * We're checking if it's a combat message we're interested in, if so, we send it on
          * down the line.
          */
+/*
         private void OnNetworkMessage(IntPtr dataPtr, ushort opCode, uint sourceActorId, uint targetActorId, NetworkMessageDirection direction)
         {
             Packet packet = new Packet()
@@ -201,3 +203,4 @@ namespace SimpleLogs.Network
         }
 
 }
+*/

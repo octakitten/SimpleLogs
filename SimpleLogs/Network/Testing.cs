@@ -1,3 +1,4 @@
+/***
 using SimpleLogs;
 
 namespace SimpleLogs.Network;
@@ -12,6 +13,7 @@ using System.Collections.Generic;
  * It's not actually used for debugging though, just figuring out opcodes
  * and packet structure.
  */
+/*
 public class Testing
 {
     private Utilities.Timer timer;
@@ -42,6 +44,7 @@ public class Testing
      * exposes to us with the method we're using. Not sure yet.
      *
      */
+/*
     public PacketDecode TryDecode(Packet packet)
     {
         // I'll try this method later.
@@ -49,3 +52,4 @@ public class Testing
     }
 }
 #endif
+*/

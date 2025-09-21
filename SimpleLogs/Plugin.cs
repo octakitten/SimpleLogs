@@ -4,7 +4,7 @@ using Dalamud.Plugin;
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin.Services;
 using SimpleLogs.Windows;
-using SimpleLogs.Network;
+//using SimpleLogs.Network;
 using SimpleLogs.Chat;
 using SimpleLogs.Utilities;
 using Dalamud.Interface;
@@ -20,7 +20,7 @@ namespace SimpleLogs
         private ICommandManager CommandManager { get; init; }
         public Configuration Configuration { get; init; }
         public WindowSystem WindowSystem = new("SimpleLogs");
-        public IGameNetwork GameNetwork { get; init; }
+        // public IGameNetwork GameNetwork { get; init; }
         public IChatGui ChatGui { get; init; }
         #if DEBUG
         //public Testing Testing { get; init; }
@@ -36,18 +36,18 @@ namespace SimpleLogs
         public DebugLog DebugLogger { get; init; }
         #endif
 
-        private Network.Network NetworkLogger { get; init; }
+        //private Network.Network NetworkLogger { get; init; }
 
 
         public Plugin(
             IDalamudPluginInterface pluginInterface,
             ICommandManager commandManager,
-            IGameNetwork gameNetwork,
+            // IGameNetwork gameNetwork,
             IChatGui chatGui)
         {
             this.PluginInterface = pluginInterface;
             this.CommandManager = commandManager;
-            this.GameNetwork = gameNetwork;
+            //this.GameNetwork = gameNetwork;
             this.ChatGui = chatGui;
 
             this.Configuration = this.PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
@@ -63,7 +63,7 @@ namespace SimpleLogs
 
             this.timer = new Utilities.Timer();
             ChatLogger = new Chat.Log(this, timer);
-            NetworkLogger = new Network.Network(this, timer);
+            //NetworkLogger = new Network.Network(this, timer);
             DamageMeter = new Utilities.DamageMeter(this);
             #if DEBUG
             DebugLogger = new Chat.DebugLog(this);

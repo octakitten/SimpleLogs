@@ -4,15 +4,39 @@
     "net9.0-windows7.0": {
       "DalamudPackager": {
         "type": "Direct",
-        "requested": "[12.0.0, )",
-        "resolved": "12.0.0",
-        "contentHash": "J5TJLV3f16T/E2H2P17ClWjtfEBPpq3yxvqW46eN36JCm6wR+EaoaYkqG9Rm5sHqs3/nK/vKjWWyvEs/jhKoXw=="
+        "requested": "[13.1.0, )",
+        "resolved": "13.1.0",
+        "contentHash": "XdoNhJGyFby5M/sdcRhnc5xTop9PHy+H50PTWpzLhJugjB19EDBiHD/AsiDF66RETM+0qKUdJBZrNuebn7qswQ=="
       },
       "DotNet.ReproducibleBuilds": {
         "type": "Direct",
         "requested": "[1.2.25, )",
         "resolved": "1.2.25",
         "contentHash": "xCXiw7BCxHJ8pF6wPepRUddlh2dlQlbr81gXA72hdk4FLHkKXas7EH/n+fk5UCA/YfMqG1Z6XaPiUjDbUNBUzg=="
+      },
+      "Hexa.NET.ImGui": {
+        "type": "Direct",
+        "requested": "[2.2.8.5, )",
+        "resolved": "2.2.8.5",
+        "contentHash": "kLOfz6775ySQPIlS3QIoy04byeEVBwQh/OP3ImYba8aJVnHay8UDMAZuZuO98kT3wz7V/nh540iiGFvoPyis1A==",
+        "dependencies": {
+          "HexaGen.Runtime": "1.1.21"
+        }
+      },
+      "Hexa.NET.ImPlot": {
+        "type": "Direct",
+        "requested": "[2.2.8.4, )",
+        "resolved": "2.2.8.4",
+        "contentHash": "Hh3V+OxnMfQjZh233kjUurgWX5BimnxThUUYtbBW2NKX+Fg2ImNhWRY456l+HsJKlBMNGRtumQBBBVb8z73x/w==",
+        "dependencies": {
+          "Hexa.NET.ImGui": "2.2.8.4",
+          "HexaGen.Runtime": "1.1.21"
+        }
+      },
+      "HexaGen.Runtime": {
+        "type": "Transitive",
+        "resolved": "1.1.21",
+        "contentHash": "fxSBIroVyuU1CQUSKsE3IZNOW8FlI58zuU1kIG5ZvDH0jtQq5yTPEvPMoNyMB5PrhzYH/taTMqd85VtxcZPD8g=="
       }
     }
   }

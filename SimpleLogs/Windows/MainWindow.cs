@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Numerics;
 using Dalamud.Interface.Windowing;
-using ImGuiNET;
+using Dalamud.Bindings.ImGui;
+using Dalamud.Bindings.ImPlot;
 
 namespace SimpleLogs.Windows;
 
@@ -26,7 +27,7 @@ public class MainWindow : Window, IDisposable
     }
 
 
-    public override void Draw()
+    unsafe public override void Draw()
     {
         ImGui.Text($"The useless button is: {this.plugin.Configuration.SomePropertyToBeSavedAndWithADefault}");
 
@@ -51,14 +52,30 @@ public class MainWindow : Window, IDisposable
         ImGui.Text("Here's your damage:");
         ImGui.Separator();
         
+        
+        //ImPlot.PlotBegin("Simple DPS Meter!");
+        //ImPlot.PlotBars("Simple DPS!", members, 8);
+        //ImPlot.EndPlot();
+        ImPlot.BeginPlot("DPS!");
         foreach (var member in plugin.DamageMeter.GetPartyMembers())
         {
-            ImGui.Text(member.name);
-            ImGui.Text(member.damage.ToString());
-            ImGui.Text(member.dps.ToString());
-            ImGui.Text(member.debuffDuration.ToString());
-            ImGui.Separator();
+            var testname = new char[4];
+            testname[0] = '1';
+            testname[1] = '2';
+            testname[2] = '3';
+            testname[3] = '4';
+            var memdps = Convert.ToSingle(member.dps);
+            float* memdpsptr = &memdps;
+            var memname = member.name;
+            //byte* memnameptr = &(byte)memname;
+            ImPlot.PlotBars(memname, memdpsptr, 1);
+            //ImGui.Text(member.name);
+            //ImGui.Text(member.damage.ToString());
+            //ImGui.Text(member.dps.ToString());
+            //ImGui.Text(member.debuffDuration.ToString());
         }
+        ImPlot.EndPlot();
+        ImGui.Separator();
 
         
         /*

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Dalamud.NET.Sdk/12.0.2">
+<Project Sdk="Dalamud.NET.Sdk/13.1.0">
 
   <PropertyGroup>
     <Version>0.1.0</Version>
@@ -20,5 +20,10 @@
     <PackageProjectUrl>http://github.com/octakitten/SimpleLogs</PackageProjectUrl>
     <PackageLicenseExpression>AGPL-3.0-or-later</PackageLicenseExpression>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Hexa.NET.ImGui" Version="2.2.8.5" />
+    <PackageReference Include="Hexa.NET.ImPlot" Version="2.2.8.4" />
+  </ItemGroup>
   
 </Project>
