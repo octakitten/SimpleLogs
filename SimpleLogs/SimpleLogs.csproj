@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Dalamud.NET.Sdk/13.1.0">
+<Project Sdk="Dalamud.NET.Sdk/14.0.1">
 
   <PropertyGroup>
     <Version>0.1.0</Version>
     <AssemblyName>SimpleLogs</AssemblyName>
     <RootNamespace>SimpleLogs</RootNamespace>
     <OutputType>Library</OutputType>
-    <TargetFrameworkVersion>v9.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v10.0</TargetFrameworkVersion>
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <DalamudPluginName>SimpleLogs</DalamudPluginName>
     <DalamudPluginAuthor>octakitten</DalamudPluginAuthor>
@@ -16,7 +16,7 @@
     <Authors>octakitten</Authors>
     <Description>A simple logging plugin.</Description>
     <Copyright>octakitten</Copyright>
-    <TargetFramework>net9.0-windows</TargetFramework>
+    <TargetFramework>net10.0-windows</TargetFramework>
     <PackageProjectUrl>http://github.com/octakitten/SimpleLogs</PackageProjectUrl>
     <PackageLicenseExpression>AGPL-3.0-or-later</PackageLicenseExpression>
   </PropertyGroup>

@@ -67,8 +67,8 @@ public class MainWindow : Window, IDisposable
                 count++;
             }
 
-            string BarMembers[count];
-            float* BarDpsNumbers[count];
+            fixed (string[] BarMembers = new string[count]);
+            fixed (float*[] BarDpsNumbers = new float*[count]);
 
             count2 = 0;
             foreach (var member in plugin.DamageMeter.GetPartyMembers())
