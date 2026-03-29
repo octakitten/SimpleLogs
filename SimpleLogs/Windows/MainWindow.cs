@@ -29,7 +29,7 @@ public class MainWindow : Window, IDisposable
 
     unsafe public override void Draw()
     {
-        ImGui.Text($"The useless button is: {this.plugin.Configuration.SomePropertyToBeSavedAndWithADefault}");
+        ImGui.Text($"The useless button is: {this.plugin.Configuration.OpenLogWindow}");
 
         if (ImGui.Button("Show Settings"))
         {
@@ -70,7 +70,7 @@ public class MainWindow : Window, IDisposable
             fixed (string[] BarMembers = new string[count]);
             fixed (float*[] BarDpsNumbers = new float*[count]);
 
-            count2 = 0;
+            int count2 = 0;
             foreach (var member in plugin.DamageMeter.GetPartyMembers())
             {
                 var memdps = Convert.ToSingle(member.dps);
