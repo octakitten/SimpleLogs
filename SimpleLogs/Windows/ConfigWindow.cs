@@ -30,7 +30,7 @@ public class ConfigWindow : Window, IDisposable
         var configValue = this.Configuration.SomePropertyToBeSavedAndWithADefault;
         if (ImGui.Checkbox("Open combat log?", ref configValue))
         {
-            this.Configuration.SomePropertyToBeSavedAndWithADefault = configValue;
+            this.Configuration.OpenLogWindow = configValue;
             this.plugin.LogWindow.IsOpen = configValue;
             // can save immediately on change, if you don't want to provide a "Save and Close" button
             this.Configuration.Save();

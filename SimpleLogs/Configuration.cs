@@ -10,7 +10,7 @@ namespace SimpleLogs
     {
         public int Version { get; set; } = 0;
 
-        public bool SomePropertyToBeSavedAndWithADefault { get; set; } = true;
+        //public bool SomePropertyToBeSavedAndWithADefault { get; set; } = true;
         // some debugging variables here
         
         //public bool debuggingEnabled { get; set; } = true;
@@ -25,6 +25,8 @@ namespace SimpleLogs
         //public double latestFightDuration { get; set; } = -1;
         
         //end debugging variables
+
+        public bool OpenLogWindow { get; set; } = false;
 
         public bool ChatLoggingEnabled { get; set; } = true;
 
