@@ -27,7 +27,7 @@ public class ConfigWindow : Window, IDisposable
     public override void Draw()
     {
         // can't ref a property, so use a local copy
-        var configValue = this.Configuration.SomePropertyToBeSavedAndWithADefault;
+        var configValue = this.Configuration.OpenLogWindow;
         if (ImGui.Checkbox("Open combat log?", ref configValue))
         {
             this.Configuration.OpenLogWindow = configValue;

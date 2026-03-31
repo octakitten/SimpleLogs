@@ -67,8 +67,8 @@ public class MainWindow : Window, IDisposable
                 count++;
             }
 
-            fixed (string[] BarMembers = new string[count]);
-            fixed (float*[] BarDpsNumbers = new float*[count]);
+            string[] BarMembers = new string[count];
+            float[] BarDpsNumbers = new float[count];
 
             int count2 = 0;
             foreach (var member in plugin.DamageMeter.GetPartyMembers())
@@ -76,8 +76,8 @@ public class MainWindow : Window, IDisposable
                 var memdps = Convert.ToSingle(member.dps);
                 float* memdpsptr = &memdps;
                 var memname = member.name;
-                BarMembers[count2] = [memname];
-                BarDpsNumbers[count2] = [memdpsptr];
+                BarMembers[count2] = memname;
+                BarDpsNumbers[count2] = memdps;
                 count2++;
                 //byte* memnameptr = &(byte)memname;
                 //ImGui.Text(member.name);
@@ -85,7 +85,7 @@ public class MainWindow : Window, IDisposable
                 //ImGui.Text(member.dps.ToString());
                 //ImGui.Text(member.debuffDuration.ToString());
             }
-            ImPlot.PlotBars(BarMembers, BarDpsNumbers, count);
+            ImPlot.PlotBars(BarMembers[0], BarDpsNumbers*, count);
             ImPlot.EndPlot();
             ImGui.Separator();
         };
